@@ -1,0 +1,168 @@
+html {
+  --body-bg: var(--surface-1);
+  --body-bg-dark: var(--surface-1);
+
+  --box-shadow: var(--inner-shadow-0), var(--shadow-3);
+  --box-shadow-dark: 0 1px 2px hsla(195deg 4.88% 48.24% / 10),
+    0 2px 4px hsl(195deg 4.88% 48.24%),
+    2px 0 32px 8px hsl(195deg 4.88% 48.24%);
+
+  --header-bg: var(--background-secondary);
+  --header-bg-dark: var(--background-secondary);
+
+  --header-box-shadow: var(--shadow-4);
+
+  --actions-container-bg: hsl(from var(--header-bg) h s var(--actions-container-luminance));
+
+  --header-outline: solid .5px;
+  --header-outline-dark: solid .5px hsl(39.09deg 76.74% 83.14% / 30%);
+
+  --property-box-shadow: var(--inner-shadow-0), var(--shadow-3);
+  --property-box-shadow-dark: -0.03rem -0.03rem hsl(200deg 8.86% 46.47%);
+
+  --label-color: var(--text-2);
+  --label-color-dark: var(--text-2-dim);
+
+  --link-hover-color: var(--link);
+  --link-hover-color-dark: var(--link);
+
+  --background-secondary: var(--surface-3);
+  --background-secondary-dark: var(--surface-3);
+
+  --border-primary: var(--text-2) var(--border-size-1) solid;
+  --border-primary-dark: var(--text-2) var(--border-size-1) solid;
+
+  --menu-border-block-start: .5px solid;
+  --menu-border-block-start-dark: solid 1px hsl(39.09deg 76.74% 83.14% / 30%);
+
+  --details-item-bg: var(--surface-1);
+  --details-item-bg-dark: var(--surface-1);
+
+  --h-card-bg: var(--surface-4);
+  --h-card-bg-dark: var(--surface-4);
+
+  --h-card-name-bg: var(--surface-3);
+  --h-card-name-bg-dark: var(--surface-3);
+
+  --name-and-org-box-shadow: var(--box-shadow);
+  --name-and-org-box-shadow-dark: 0 1px 2px hsla(195deg 4.88% 48.24% / 10),
+    0 2px 4px hsl(195deg 4.88% 48.24%);
+
+  --editable-bg: var(--surface-1);
+  --editable-bg-dark: hsl(var(--gray-9-hsl) / 30%);
+  --editable-outline: solid blueviolet .5px;
+  --editable-outline-dark: solid .5px;
+  --editable-hover-box-shadow: 0 0 5px 1px hsl(220deg 100% 50% / 80%);
+  --editable-hover-box-shadow-dark: 0 0 5px 1px hsl(220deg 36.24% 81.18% / 80%);
+  --editable-caret-color: red;
+  --editable-line-height: 1.4;
+  --editable-padding: .5em;
+  --editable-font: monospace;
+
+  --field-bg: var(--surface-1);
+  --field-bg-dark: var(--editable-bg-dark);
+
+  --switch-color-checked: var(--brand);
+
+  
+
+  --scrolltop-bg: #007bff;
+  --scrolltop-hover-bg: #2990ff;
+}
+
+/* when viewing dark themes in light-mode*/
+
+[data-theme|="dark"] {
+  --box-shadow: var(--box-shadow-dark);
+  --header-outline: var(--header-outline-dark);
+  --property-box-shadow: var(--property-box-shadow-dark);
+  --label-color: var(--label-color-dark);
+  --menu-border-block-start: var(--menu-border-block-start-dark);
+
+  --actions-container-luminance: 44%;
+  --name-and-org-box-shadow: var(--name-and-org-box-shadow-dark);
+  --editable-bg: var(--editable-bg-dark);
+  --editable-outline: var(--editable-outline-dark);
+  --editable-hover-box-shadow: var(--editable-hover-box-shadow-dark);
+  --field-bg-dark: var(--editable-bg);
+  --switch-color-checked: var(--brand);
+  --scrolltop-bg: var(--surface-3);
+  --scrolltop-hover-bg: var(--surface-4);
+}
+
+[data-theme|="dark"] .actions-container {
+  background-color: var(--background-secondary-dark);
+}
+
+[data-theme|="dark"] :where(.btn, button, input:is([type=button], [type=submit], [type=reset])),
+:where(input[type=file])::-webkit-file-upload-button,
+:where(input[type=file])::file-selector-button {
+  --_bg: var(--_bg-dark);
+  --_highlight: var(--_highlight-dark);
+  --_ink-shadow: var(--_ink-shadow-dark);
+
+  [theme="dark-dim"] & {
+    --_bg: var(--surface-1);
+    --_highlight: var(--_highlight-light);
+    --_ink-shadow: var(--_ink-shadow-light);
+  }
+}
+
+
+[data-theme="dark-dim"] {
+  --h-card-name-bg: var(--surface-2);
+  --h-card-name-bg-dark: var(--hcard-name-bg);
+  --background-secondary: var(--surface-2);
+  --background-secondary-dark: var(--surface-2);
+
+  & :where([disabled]),
+  :where([type=reset]),
+  :where([type=submit]),
+  :where(form button:not([type=button])) {
+    --_bg: var(--surface-1);
+  }
+
+  & :where([type=reset]) {
+    --_text: var(--red-2);
+    --_border: var(--surface-3);
+  }
+
+  & :where(.btn, button, input:is([type=button], [type=submit], [type=reset])),
+  :where(input[type=file])::-webkit-file-upload-button,
+  :where(input[type=file])::file-selector-button {
+    --_ink-shadow: unset;
+  }
+}
+
+/* when viewing light themes in dark-mode*/
+
+@media (prefers-color-scheme: dark) {
+
+  [data-theme|="light"] {
+    --box-shadow-dark: var(--box-shadow);
+    --header-outline-dark: var(--header-outline);
+    --property-box-shadow-dark: var(--property-box-shadow);
+    --label-color-dark: var(--label-color);
+    --menu-border-block-start-dark: var(--menu-border-block-start);
+    --name-and-org-box-shadow-dark: var(--name-and-org-box-shadow);
+    --editable-bg-dark: var(--editable-bg);
+    --editable-outline-dark: var(--editable-outline);
+    --editable-hover-box-shadow-dark: var(--editable-hover-box-shadow);
+    --field-bg-dark: var(--editable-bg);
+    --switch-color-checked: var(--brand);
+    --scrolltop-bg: #007bff;
+    --scrolltop-hover-bg: #2990ff;
+  }
+
+  [data-theme|="light"] :where(textarea, select, input:not([type=button], [type=submit], [type=reset])) {
+    background-color: var(--surface-1);
+  }
+
+  [data-theme|="light"] :where(.btn, button, input:is([type=button], [type=submit], [type=reset])),
+  :where(input[type=file])::-webkit-file-upload-button,
+  :where(input[type=file])::file-selector-button {
+    --_bg: var(--_bg-light);
+    --_highlight: var(--_highlight-light);
+    --_ink-shadow: var(--_ink-shadow-light);
+  }
+}

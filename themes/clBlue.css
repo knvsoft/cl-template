@@ -1,0 +1,49 @@
+[data-theme="clBlue"] {
+  color-scheme: light;
+
+  --brand: hsl(var(--blue-6-hsl) / 78%);
+  --text-1: var(--gray-8);
+  --text-2: var(--gray-7);
+  --surface-1: hsl(var(--blue-0-hsl));
+  --surface-2: hsl(var(--blue-2-hsl) / 70%);
+  --surface-3: var(--blue-1);
+  --surface-4: #c4daec;
+  --surface-shadow: var(--gray-8-hsl);
+  --shadow-strength: 2%;
+
+  --actions-container-luminance: 85%;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-theme="clBlue"] {
+    color-scheme: dark;
+
+    --brand: hsl(198deg 76.64% 46.7% / 80%);
+    --text-1: var(--gray-3);
+    --text-2: var(--gray-5);
+    --surface-1: hsl(195.05deg 70.01% 28.04%);
+    --surface-2: hsl(201.11deg 86.17% 63.14% / 25%);
+    --surface-3: hsl(var(--cyan-10-hsl) / 40%);
+    --surface-4: #165569;
+    --surface-shadow: var(--gray-12-hsl);
+    --shadow-strength: 80%;
+
+    --actions-container-luminance: 85%;
+  }
+}
+
+[data-theme="clBlue"] {
+  --box-shadow: 0 0 1px 0 hsl(217.89deg 76% 14.71% / 90%),
+    0 1px 2px 1px hsl(217.89deg 76% 14.71% / 20%);
+  --box-shadow-dark: 0 1px 2px hsla(195deg 4.88% 48.24% / 10),
+    0 2px 4px hsl(195deg 4.88% 48.24%),
+    2px 0 32px 8px hsl(195deg 4.88% 48.24%);
+
+  --header-box-shadow: 0 0 1px 0 hsl(217.89deg 76% 14.71% / 90%),
+    0 1px 2px 1px hsl(217.89deg 76% 14.71% / 20%);
+
+  --property-box-shadow: -0.03rem -0.03rem hsl(217.89deg 76% 14.71% / 25%);
+  --property-box-shadow-dark: -0.03rem -0.03rem hsl(200deg 8.86% 46.47%);
+  
+  --editable-bg-dark: var(--surface-1);
+}

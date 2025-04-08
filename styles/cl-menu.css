@@ -1,0 +1,462 @@
+.menu {
+  margin-block-start: 0rem;
+  margin-inline: 0;
+  font-family: var(--menu-font);
+  display: none;
+}
+
+button[data-action="copyHtml"] {
+  max-width: 15rem;
+}
+
+label {
+  font-family: var(--menu-font);
+}
+
+header:has(#cb-show-menu:checked) .menu {
+  display: flex;
+  gap: var(--size-3);
+  padding-block-end: var(--size-3);
+}
+
+.menu.show {
+  display: flex;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.menu.vstack > * + * {
+  margin-block-start: 0rem;
+}
+
+.menu fieldset {
+  flex: 1;
+  align-items: center;
+  border: none;
+  padding: 1rem;
+  max-width: var(--fieldset-inside-menu-max-width);
+  display: flex;
+  flex-flow: column wrap;
+  align-items: start;
+  gap: var(--size-2);
+}
+
+.menu fieldset legend {
+  margin-inline-end: 1em;
+  min-width: var(--fieldset-legend-min-width);
+  padding-block-start: 1rem;
+  font-weight: var(--font-weight-6);
+}
+
+.menu fieldset div,
+.menu fieldset label {
+  display: flex;
+  align-items: center;
+  gap: .5em;
+}
+
+.menu > .hstack {
+  border-block-start: var(--menu-border-block-start);
+  gap: .5rem 1.5rem;
+  justify-content: stretch;
+}
+
+.menu > .hstack > fieldset {
+  max-width: var(--menu-section-max-width);
+}
+
+div:has(#show-menu) {
+  justify-content: space-between;
+}
+
+#show-fields {
+  display: flex;
+  column-gap: 1em;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.menu .sub-menu-items {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1rem;
+  align-items: start;
+}
+
+.sub-menu-items > * {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.sub-menu-items input[type="checkbox"] {
+  vertical-align: text-bottom;
+}
+
+#printing-options .sub-menu-items {
+  display: flex;
+  flex-flow: column;
+}
+
+#printing-options .sub-menu-items label {
+  white-space: wrap;
+}
+
+div:has(>#narrow-justify) {
+  display: none;
+  flex-direction: column;
+  align-items: start;
+}
+
+.narrow-option-stack:has(input:checked) div:has(>#narrow-justify) {
+  display: flex;
+}
+
+fieldset[name=layout] > .hstack {
+  display: grid;
+  column-gap: 1rem;
+}
+
+.menu .font-option {
+  display: grid;
+  grid-template-columns: var(--menu-fieldset-grid-min-col-width);
+}
+
+.menu .narrow-option-stack {
+  display: grid;
+}
+
+.menu .narrow-option-stack label {
+  width: 100%;
+}
+
+.narrow-option-stack .range-wrap {
+  display: none;
+}
+
+.narrow-option-stack:has(input:checked) .range-wrap {
+  display: block;
+}
+
+.range-wrap.show {
+  display: block;
+}
+
+.menu :is(input, select, button) {
+  max-width: 20rem;
+}
+
+.menu select {
+  width: 100%;
+}
+
+#file-name {
+  width: var(--menu-fieldset-grid-min-col-width);
+}
+
+#save-file {
+  width: var(--menu-fieldset-grid-min-col-width);
+}
+
+filter-input {
+  place-self: center;
+  flex: 1;
+}
+
+.actions-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem;
+  margin-block-start: 1rem;
+  align-items: center;
+  background: var(--actions-container-bg);
+  border-block-start: var(--border-primary);
+  border-block-end: var(--border-primary);
+  min-height: var(--actions-container-height);
+  top: 0;
+  gap: 1rem;
+  z-index: 10;
+}
+
+.actions-container .copy-export.wrapper {
+  margin-inline-start: auto;
+  text-align: center;
+}
+
+.actions-container .copy-export-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25ch, 1fr));
+  white-space: normal;
+  gap: 1rem;
+  margin-block-start: 1rem;
+  display: none;
+}
+
+.actions-container .copy-export-details dl {
+  display: block;
+  outline: dashed .5px;
+  padding: 1rem;
+  text-align: start;
+}
+
+.actions-container .copy-export-details dt {
+  font-weight: 700;
+  margin-block-end: .5rem;
+}
+
+.actions-container button {
+  white-space: nowrap;
+}
+
+.copy-export.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  gap: 1rem;
+}
+
+.copy-export.wrapper summary {
+  position: relative;
+}
+
+.copy-export.wrapper summary::before,
+.copy-export.wrapper summary::after {
+  content: '';
+}
+
+.copy-export.wrapper summary::before,
+.copy-export.wrapper summary::after {
+  width: .75em;
+  height: 0;
+  border-bottom: 2px solid;
+  position: absolute;
+  top: calc(50% - 1px);
+  right: 0;
+}
+
+.copy-export.wrapper summary::after {
+  transform: rotate(90deg);
+  transform-origin: 50% 50%;
+}
+
+.copy-export.wrapper [open] summary::after {
+  transform: rotate(0deg);
+}
+
+.copy-export-details dl {
+  background: var(--details-item-bg);
+}
+
+#list-comment:empty:before,
+.p-note:empty:before {
+  content: "Comment...";
+  pointer-events: none;
+  opacity: .5;
+  display: block;
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .h-card {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion:no-preference) {
+  #h-cards.narrow-layout .h-card {
+    transition: width 0.6s linear;
+  }
+
+  body:has([value=narrow-layout]:checked) .h-card {
+    transition: width 0.6s linear;
+  }
+}
+
+input[type=checkbox].switch {
+  --_switch-width: var(--switch-width, 2.25em);
+  --_switch-height: var(--switch-height, calc(var(--_switch-width) / 2));
+  --_switch-color: var(--switch-color, hsl(220 10% 60%));
+  --_switch-color-checked: var(--switch-color-checked, hsl(198deg 97% 48% / 78%));
+  --_thumb-margin: var(--thumb-margin, .1em);
+  --_thumb-color: var(--thumb-color, hsl(220 10% 96%));
+
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  width: var(--_switch-width);
+  height: var(--_switch-height);
+  box-sizing: border-box;
+  border: 1px solid rgb(0 0 0 / .1);
+  border-radius: 1em;
+  --current-background: var(--_switch-color);
+  background: var(--current-background);
+  cursor: pointer;
+  margin: revert;
+  padding: initial;
+  transition: .3s background;
+}
+
+input[type=checkbox].switch::before {
+  content: "";
+  display: block;
+  aspect-ratio: 1 / 1;
+  margin: var(--_thumb-margin);
+  height: calc(100% - 2 * var(--_thumb-margin));
+  background: var(--_thumb-color);
+  border-radius: 50%;
+  transition: margin;
+  transition-duration: inherit;
+  box-shadow: 0 0 0 1px var(--current-background), 0 0 var(--focus-ring, );
+}
+
+input[type=checkbox].switch:checked {
+  --current-background: var(--_switch-color-checked)
+}
+
+input[type=checkbox].switch:checked::before {
+  margin-inline-start: calc(var(--_switch-width) - var(--_switch-height) + var(--_thumb-margin));
+}
+
+input[type=checkbox].switch:disabled {
+  filter: grayscale();
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+input[type=checkbox].switch:focus {
+  outline: none;
+}
+
+input[type=checkbox].switch:focus::before {
+  --focus-ring: .05em .2em hsl(205 80% 50% / .5);
+}
+
+input[type=range] {
+  appearance: none;
+  background: #fff0;
+  margin: 20px 0;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+.range-wrap {
+  position: relative
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  transition: 0.2s;
+  background: #03a9f4;
+  border-radius: 25px;
+}
+
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  transition: 0.2s;
+  background: #03a9f4;
+  border-radius: 25px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 4px 0 rgb(0 0 0);
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -8px;
+}
+
+input[type=range]::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 4px 0 rgb(0 0 0);
+  cursor: pointer;
+  margin-top: -8px;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #03a9f4;
+}
+
+.scrolltop-wrap {
+  box-sizing: border-box;
+  position: absolute;
+  top: 12rem;
+  right: 2rem;
+  bottom: 0;
+  pointer-events: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.scrolltop-wrap #scrolltop-bg {
+  fill: var(--scrolltop-bg);
+}
+
+.scrolltop-wrap #scrolltop-arrow {
+  fill: #fff;
+}
+
+.scrolltop-wrap a:hover #scrolltop-bg {
+  fill: var(--scrolltop-hover-bg);
+}
+
+.scrolltop-wrap a:hover #scrolltop-arrow {
+  fill: #fff;
+}
+
+@supports (-moz-appearance:meterbar) {
+  .scrolltop-wrap {
+    clip: rect(0, 3rem, auto, 0);
+  }
+}
+
+.scrolltop-wrap a {
+  position: fixed;
+  position: sticky;
+  top: -5rem;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: -5rem;
+  transform: translateY(100vh);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: inline-block;
+  text-decoration: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: all;
+  outline: none;
+  overflow: hidden;
+}
+
+.scrolltop-wrap a svg {
+  display: block;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+}
+
+.scrolltop-wrap a svg path {
+  transition: all 0.1s;
+}
+
+.scrolltop-wrap a #scrolltop-arrow {
+  transform: scale(.66);
+  transform-origin: center;
+}
+
+body {
+  position: relative;
+}

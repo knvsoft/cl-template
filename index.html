@@ -1,0 +1,406 @@
+<!DOCTYPE html><html lang="en" data-theme="clBlue"><head>
+<meta charset="UTF-8">
+<title>Contacts Lister 2.2 Sample List</title>
+<meta name="color-scheme" content="dark light">
+<meta name="supported-color-schemes" content="dark light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<meta name="generator" content="Contacts Lister 2.2">
+<meta name="description" content="Contacts Listing produced by Contacts Lister 2.2">
+<meta name="robots" content="noindex">
+
+<link rel="stylesheet" href="styles/cl-reset.css" media="print, screen">
+
+<style id="open-props" data-rm-cp>
+@import url("https://cdn.jsdelivr.net/npm/open-props/open-props.min.css") print, screen;
+@import url("https://cdn.jsdelivr.net/npm/open-props/normalize.min.css") print, screen;
+@import url("https://cdn.jsdelivr.net/npm/open-props/colors-hsl.min.css") print, screen;
+@import url("https://cdn.jsdelivr.net/npm/open-props/theme.light.switch.min.css") print, screen;
+@import url("https://cdn.jsdelivr.net/npm/open-props/theme.dark.switch.min.css") print, screen;
+@import url("https://cdn.jsdelivr.net/npm/open-props/buttons.min.css") screen;
+</style>
+
+<style id="themes" data-rm-cp>
+@import url("themes/dark.css") print, screen;
+@import url("themes/light.css") print, screen;
+@import url("themes/dim.css") print, screen;
+@import url("themes/grape.css") print, screen;
+@import url("themes/choco.css") print, screen;
+@import url("themes/switch.css") print, screen;
+@import url("themes/clBlue.css") print, screen;
+@import url("themes/apply-theme.css") print, screen;
+</style>
+
+<style id="cl-css-vars" data-rm-cp>
+:where(html) {
+  --body-font: initial;
+  --body-margin-block: 1rem;
+  --body-margin-inline: 1rem;
+  --body-min-width: 40rem;
+  --line-height: 1.5;
+  --border-radius: .2rem;
+  --menu-font: var(--font-system-ui);
+  --menu-section-max-width: 80rem;
+  --h-cards-gap: 1rem;
+  --h-cards-padding-block-end: .5rem;
+  --actions-container-height: 2rem;
+  --h-card-min-width: 24rem;
+  --h-card-narrow-width: 24;
+  --h-card-narrow-width-unit: rem;
+  --base-unit-for-width: 1rem;
+  --field-flex-basis: 18rem;
+  --editable-line-height: 1.4;
+  --editable-padding: .5em;
+  --editable-font: monospace;
+  --field-font-size: var(--font-size-1);
+  --input-padding: .3em;
+  --list-title-font: inherit;
+  --list-title-font-size: 1rem;
+  --label-font-size: .8rem;
+  --label-font-weight: revert;
+  --label-line-height: 1.2;
+  --fieldset-legend-min-width: 3rem;
+  --fieldset-inside-menu-max-width: 27rem;
+  --menu-fieldset-grid-min-col-width: 9rem;
+  --show-menu-display: flex;
+  --gutter: 1.5rem;
+  --checkbox-radio-inline-size: var(--size-3);
+  }
+</style>
+
+<style id="css-main" >
+@import url("styles/cl-main.css") print, screen;
+</style>
+
+<style id="css-for-menus" media="screen" data-rm-cp>
+@import url("styles/cl-menu.css") screen;
+</style>
+
+<style id="styles/css-options-applied">
+</style>
+
+<style id="css-apply-options" data-rm-cp>
+@import url("styles/cl-apply-options.css") print, screen;
+@import url("styles/cl-animation.css") screen;
+</style>
+
+<style id="css-dark-mode" >
+@import url("styles/cl-dark-mode.css") print, screen;
+</style>
+
+<style id="print" >
+@import url("styles/cl-print.css") print;
+</style>
+
+</head>
+<body id="_2GUxfjrYuxCgwjc5HAS8tU" data-revision="0" data-theme="clBlue"><time id="exported_at" datetime="2025-04-03T15:50:12Z"></time>
+<div aria-live="polite" id="announce"></div>
+<div id="faux-body">
+<header class="vstack">
+<h1 id="list-title" class="editable" contenteditable="" aria-label="List title">Contacts List - Apr 3, 2025</h1>
+<div id="list-comment-label" class="list-comment-label">Comment:</div>
+<div id="list-comment" class="editable" contenteditable=""></div>
+    <form id="top-form" class="hstack header-top" onsubmit="return false;">
+      <div id="show-menu" class="hstack" data-rm-cp="">
+        <div>
+          <label for="cb-toggle-edit">Edit</label>
+          <input id="cb-toggle-edit" type="checkbox" checked="" data-action="toggleContentEditable" class="switch" title="Disable editing to make links in comments clickable.">
+        </div>
+
+        <div>
+          <label for="cb-show-menu">Menu</label>
+          <input id="cb-show-menu" type="checkbox" data-action="toggleMenu" data-target="#menu" class="switch">
+        </div>
+      </div>
+<!-- header-top --></form>
+<form id="menu" class="menu vstack" data-rm-cp="" onsubmit="return false;">
+
+<div class="hstack">
+<div class="sub-menu-items">
+
+<fieldset data-target="#h-cards" data-action="toggleLayout" name="layout" data-js-req="">
+<legend>Layout:</legend>
+
+<label>
+<input id="wide-layout" type="radio" name="layout" value="wide-layout" checked="">
+Wide
+</label>
+
+<div class="narrow-option-stack">
+<label>
+<input id="narrow-layout" type="radio" name="layout" value="narrow-layout">
+Narrow
+</label>
+
+<div class="range-wrap">
+<input id="h-card-width" data-action="setNarrowWidth" type="range" min="24" max="48" title="Adjust card width">
+</div>
+
+<div>
+<label for="narrow-justify">Justify cards<!-- -->:</label>
+
+<select id="narrow-justify">
+<option value="start" selected>start</option>
+<option value="center">center</option>
+<option value="space-between">space-between</option>
+<option value="space-around">space-around</option>
+<option value="space-evenly">space-evenly</option>
+</select>
+</div>
+
+</div>
+</fieldset>
+
+<fieldset>
+<label for="font">Font:</label>
+<select id="font" data-action="setBodyFont">
+<optgroup label="Modern Font Stacks">
+  <option value="100" selected="">System UI
+</option><option value="101">Transitional
+</option><option value="102">Old Style
+</option><option value="103">Humanist
+</option><option value="104">Geometric Humanist
+</option><option value="105">Classical Humanist
+</option><option value="106">Neo-Grotesque
+</option><option value="107">Monospace Slab Serif
+</option><option value="108">Monospace Code
+</option><option value="109">Industrial
+</option><option value="110">Rounded Sans
+</option><option value="111">Slab Serif
+</option><option value="112">Antique
+</option><option value="113">Didone
+</option><option value="114">Handwritten
+</option></optgroup>
+<optgroup label="Generic">
+  <option value="200">Fangsong
+</option></optgroup>
+</select>
+</fieldset>
+
+<fieldset>
+<label for="font-size">Font Size:</label>
+<select id="font-size" data-action="setFontSize">
+<option value="1">Fixed 1</option>
+<option value="2">Fixed 2</option>
+<option value="fluid-0">Fluid 1</option>
+<option value="fluid-1">Fluid 2</option>
+</select>
+</fieldset>
+
+<fieldset>
+<label for="theme">Theme:</label>
+<select id="theme" data-action="setTheme">
+<option value="clBlue" selected>CL Blue</option>
+<option value="auto">Auto</option>
+<option value="light">Light</option>
+<option value="dark">Dark</option>
+<option value="dark-dim">Dim</option>
+<option value="light-grape">Grape (light)</option>
+<option value="dark-choco">Choco (dark)</option>
+</select>
+</fieldset>
+
+</div>
+<!-- viewing-options --></div>
+
+<details>
+  <summary>Option for printouts</summary>
+  <fieldset id="printing-options">
+  <div class="sub-menu-items">
+  <label>
+  <input id="show-card-counter" type="checkbox">
+  Show card number/total
+  </label>
+  <label>
+    <input id="print-single-column" type="checkbox">
+    Single column layout (to avoid page-break issues in Safari and Firefox)
+  </label>
+  </div>
+  </fieldset>
+</details>
+
+<details id="changes-section" data-js-req="">
+<summary>Clear saved settings</summary>
+<fieldset>
+  <div class="sub-menu-items">
+    <button type="reset" id="reset-changes" data-action="resetChanges">For this list<span class="notice" data-notice="Settings reset." hidden=""></span></button>
+    <button type="reset" id="reset-all" data-action="resetAll">For all lists<span class="notice" data-notice="Cleared data." hidden=""></span></button>
+  </div>
+</fieldset>
+</details>
+
+<!-- menu --></form>
+</header>
+<form class="menu actions-container" data-rm-cp="" data-js-req="" onsubmit="return false;">
+  <filter-input aria-owns="h-cards">
+    <input id="filter-input" type="search" autofocus="" autocomplete="off" placeholder="enter text to filter cards" title="enter text to filter cards" spellcheck="false">
+  </filter-input>
+
+<div>
+<div id="show-fields" data-action="toggleField" data-target="#h-cards">
+<div>Show:</div>
+<div class="sub-menu-items">
+<div id="comment">
+<input type="checkbox" id="cb-p-note" data-toggle-class="" value="p-note" checked="">
+<label for="cb-p-note">
+  Comment
+</label>
+</div>
+<div id="phoneNumbers">
+<input type="checkbox" id="cb-h-tel" data-toggle-class="" value="h-tel" checked="">
+<label for="cb-h-tel">Phone</label>
+</div>
+<div id="postalAddresses">
+<input type="checkbox" id="cb-h-adr" data-toggle-class="" value="h-adr" checked="">
+<label for="cb-h-adr">Address</label>
+</div>
+<div id="emailAddresses">
+<input type="checkbox" id="cb-u-email" data-toggle-class="" value="u-email" checked="">
+<label for="cb-u-email">Email</label>
+</div>
+<div id="urlAddresses">
+<input type="checkbox" id="cb-u-url" data-toggle-class="" value="u-url" checked="">
+<label for="cb-u-url">Websites</label>
+</div>
+<div id="socialProfiles">
+<input type="checkbox" id="cb-u-social" data-toggle-class="" value="u-social" checked="">
+<label for="cb-u-social">Social profile</label>
+</div>
+<div id="birthday">
+<input type="checkbox" id="cb-dt-bday" data-toggle-class="" value="dt-bday" checked="">
+<label for="cb-dt-bday">Birthday</label>
+</div>
+</div>
+</div>
+</div>
+
+<!-- actions-container --></form>
+<main id="h-cards" data-filter-list="" class="wide-layout p-note h-tel h-adr u-email u-url u-social dt-bday">
+<article class="h-card" id="_9Sq4fS29mSmYKwzzsFkGxw"><div class="name-and-org"><input type="checkbox" id="crd1" class="details switch" checked="" data-rm-cp="" title="Show card details for: Arden Bentley"><label for="crd1" title="Show card details for: Arden Bentley">Show card details</label><h2 class="p-name">Arden Bentley</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(811)%20203-1700">(811) 203-1700</a></dd></div><div><dt>work</dt><dd><a href="tel:(780)%20740-8485">(780) 740-8485</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=Ap%20%23715-1102%20Nec%20Ave,Valdez,Indiana">Ap #715-1102 Nec Ave<br>Indiana 29145</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:velit@quistristique.org">velit@quistristique.org</a></dd></div><div><dt>work</dt><dd><a href="mailto:Etiam.bibendum.fermentum@variuseteuismod.edu">Etiam<wbr>.bibendum<wbr>.fermentum<wbr>@variuseteuismod<wbr>.edu</a></dd></div></dl>
+<div class="card-counter">1 of 7</div></article>
+<article class="h-card" id="_qrmS2A5YuPX7UkrNamkq8G"><div class="name-and-org"><input type="checkbox" id="crd2" class="details switch" checked="" data-rm-cp="" title="Show card details for: Coby Boone"><label for="crd2" title="Show card details for: Coby Boone">Show card details</label><h2 class="p-name">Coby Boone</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(843)%20262-1079">(843) 262-1079</a></dd></div><div><dt>work</dt><dd><a href="tel:(310)%20472-4796">(310) 472-4796</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=5464%20Rutrum.%20Ave,Rolling%20Hills%20Estates,Louisiana">5464 Rutrum. Ave<br>Louisiana 70242</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:mus.Proin.vel@cursusa.ca">mus.Proin.vel@cursusa.ca</a></dd></div><div><dt>work</dt><dd><a href="mailto:mi.felis@dolorNullasemper.com">mi.felis@dolorNullasemper.com</a></dd></div></dl>
+<div class="card-counter">2 of 7</div></article>
+<article class="h-card" id="_utpaCyevPcJ49HbsAz7wei"><div class="name-and-org"><input type="checkbox" id="crd3" class="details switch" checked="" data-rm-cp="" title="Show card details for: Gary Booth"><label for="crd3" title="Show card details for: Gary Booth">Show card details</label><h2 class="p-name">Gary Booth</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(533)%20852-3749">(533) 852-3749</a></dd></div><div><dt>work</dt><dd><a href="tel:(898)%20801-9733">(898) 801-9733</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=238-2095%20Donec%20St.,Weymouth,Mississippi">238-2095 Donec St.<br>Mississippi 48272</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:consectetuer.cursus.et@massa.com">consectetuer.cursus.et@massa.com</a></dd></div><div><dt>work</dt><dd><a href="mailto:nunc.sit@aliquet.org">nunc.sit@aliquet.org</a></dd></div></dl>
+<div class="card-counter">3 of 7</div></article>
+<article class="h-card" id="_w6xje7fj4dXkJCe3JNvJ6o"><div class="name-and-org"><input type="checkbox" id="crd4" class="details switch" checked="" data-rm-cp="" title="Show card details for: Lysandra Arnold"><label for="crd4" title="Show card details for: Lysandra Arnold">Show card details</label><h2 class="p-name">Lysandra Arnold</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(337)%20528-0683">(337) 528-0683</a></dd></div><div><dt>work</dt><dd><a href="tel:(723)%20786-3818">(723) 786-3818</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=6010%20Risus.%20Rd.,Newport%20News,Arkansas">6010 Risus. Rd.<br>Arkansas 3291</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:tortor.dictum.eu@semut.ca">tortor.dictum.eu@semut.ca</a></dd></div><div><dt>work</dt><dd><a href="mailto:Suspendisse.non.leo@congue.ca">Suspendisse.non.leo@congue.ca</a></dd></div></dl>
+<div class="card-counter">4 of 7</div></article>
+<article class="h-card" id="_aPPYCwa1n8cfDbnwejNnV6"><div class="name-and-org"><input type="checkbox" id="crd5" class="details switch" checked="" data-rm-cp="" title="Show card details for: Remedios Blankenship"><label for="crd5" title="Show card details for: Remedios Blankenship">Show card details</label><h2 class="p-name">Remedios Blankenship</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(455)%20896-5041">(455) 896-5041</a></dd></div><div><dt>work</dt><dd><a href="tel:(219)%20616-7284">(219) 616-7284</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=Ap%20%23656-9275%20Nulla%20St.,Rancho%20Palos%20Verdes,South%20Dakota">Ap #656-9275 Nulla St.<br>South Dakota 70601</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:Quisque.imperdiet.erat@faucibus.ca">Quisque<wbr>.imperdiet<wbr>.erat<wbr>@faucibus<wbr>.ca</a></dd></div><div><dt>work</dt><dd><a href="mailto:faucibus.ut@pedeacurna.com">faucibus.ut@pedeacurna.com</a></dd></div></dl>
+<div class="card-counter">5 of 7</div></article>
+<article class="h-card" id="_f8NJ4zyQA7wfxxtsiMr25z"><div class="name-and-org"><input type="checkbox" id="crd6" class="details switch" checked="" data-rm-cp="" title="Show card details for: Rowan Ashley"><label for="crd6" title="Show card details for: Rowan Ashley">Show card details</label><h2 class="p-name">Rowan Ashley</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(815)%20380-9365">(815) 380-9365</a></dd></div><div><dt>work</dt><dd><a href="tel:(148)%20960-7684">(148) 960-7684</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=3500%20Pede%20Ave,Rancho%20Cucamonga,Nevada">3500 Pede Ave<br>Nevada 21037</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:mauris.eu@vitae.edu">mauris.eu@vitae.edu</a></dd></div><div><dt>work</dt><dd><a href="mailto:quis.diam.luctus@ullamcorper.org">quis.diam.luctus@ullamcorper.org</a></dd></div></dl>
+<div class="card-counter">6 of 7</div></article>
+<article class="h-card" id="_9NLHLuVTumHPMBfzTgFXQR"><div class="name-and-org"><input type="checkbox" id="crd7" class="details switch" checked="" data-rm-cp="" title="Show card details for: Tiger Benjamin"><label for="crd7" title="Show card details for: Tiger Benjamin">Show card details</label><h2 class="p-name">Tiger Benjamin</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(225)%20724-6667">(225) 724-6667</a></dd></div><div><dt>work</dt><dd><a href="tel:(117)%20726-7564">(117) 726-7564</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=Ap%20%23331-1294%20Non%20Avenue,Santa%20Clarita,Nevada">Ap #331-1294 Non Avenue<br>Nevada 22392</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:at.arcu.Vestibulum@rutrum.edu">at.arcu.Vestibulum@rutrum.edu</a></dd></div><div><dt>work</dt><dd><a href="mailto:et@vehiculaaliquet.org">et@vehiculaaliquet.org</a></dd></div></dl>
+<div class="card-counter">7 of 7</div></article></main>
+
+<div id="created-time">
+    List created on:
+    4/3/2025, 11:50 AM
+</div>
+<!-- faux-body --></div>
+
+<hr class="end-of-listing">
+<p class="end-of-listing"><br></p>
+
+<div class="scrolltop-wrap" data-rm-cp="">
+  <a href="#" role="button" aria-label="Scroll to top">
+      <svg height="48" viewBox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg">
+          <path id="scrolltop-bg" d="M0 0h48v48h-48z"></path>
+          <path id="scrolltop-arrow" d="M14.83 30.83l9.17-9.17 9.17 9.17 2.83-2.83-12-12-12 12z"></path>
+      </svg>
+  </a>
+</div>
+
+<template id="email-template" data-rm-cp="">
+  <style id="template-css-options-applied">
+    body {
+      font-family: var(--body-font);
+    }
+
+    #faux-body {
+      padding: 1rem;
+      font-size: 16px;
+      max-width: 70rem;
+      min-width: 26rem;
+    }
+
+    .email-break {
+      display: block;
+    }
+
+    .vstack {
+      display: block;
+    }
+
+    header {
+      display: block;
+      padding: 1rem !important;
+    }
+
+    .header>* {
+      margin-top: .5rem;
+    }
+
+    #list-title,
+    #list-comment {
+      min-width: 24rem !important;
+      text-align: start;
+    }
+
+    #h-cards.narrow-layout {
+      flex-flow: row wrap;
+      justify-content: start;
+    }
+
+    #h-cards.narrow-layout .h-card {
+      flex-flow: column;
+      flex-grow: 1;
+      max-width: var(--h-card-narrow-width)var(--h-card-narrow-width-unit);
+    }
+
+    #h-cards.narrow-layout .h-card dl {
+      flex-basis: 0;
+    }
+
+    #h-cards.narrow-layout .name-and-org {
+      flex: none;
+    }
+
+    .h-card {
+      display: block;
+      padding: 0;
+      margin-top: 1rem;
+      outline: var(--header-outline);
+    }
+
+    .h-card dl {
+      display: flex;
+      column-gap: 2em;
+    }
+
+    .h-card dd {
+      min-width: 8rem;
+      padding-right: 1.5rem;
+    }
+
+    dl.p-note {
+      display: block !important;
+      padding: 0.8em 0;
+    }
+
+    dd.p-note {
+      margin-top: .8rem !important;
+    }
+
+    .name-and-org {
+      text-align: start;
+    }
+
+    .end-of-listing {
+      display: block;
+    }
+  </style>
+</template>
+
+<script id="js-main" src="scripts/cl-main.js">
+</script>
+
+</body>
+</html>

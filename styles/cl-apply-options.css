@@ -1,0 +1,185 @@
+.h-card dl {
+  display: none;
+}
+
+body:has([value=narrow-layout]:checked) #h-cards {
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+body:has(#narrow-justify [value=start]:checked) #h-cards.narrow-layout {
+  justify-content: start;
+}
+
+body:has(#narrow-justify [value=center]:checked) #h-cards.narrow-layout {
+  justify-content: center;
+}
+
+body:has(#narrow-justify [value=space-between]:checked) #h-cards.narrow-layout {
+  justify-content: space-between;
+}
+
+body:has(#narrow-justify [value=space-evenly]:checked) #h-cards.narrow-layout {
+  justify-content: space-evenly;
+}
+
+body:has(#narrow-justify [value=space-around]:checked) #h-cards.narrow-layout {
+  justify-content: space-around;
+}
+
+#h-cards.narrow-layout {
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.h-card:not(:has(.details:checked)) {
+  min-width: initial;
+  width: auto;
+}
+
+body:has([value=narrow-layout]:checked) .h-card {
+  flex-flow: column;
+  flex-grow: 1;
+  min-width: calc(var(--h-card-narrow-width) * var(--base-unit-for-width));
+}
+
+#h-cards.narrow-layout .h-card {
+  flex-flow: column;
+  flex-grow: 1;
+  max-width: calc(var(--h-card-narrow-width) * var(--base-unit-for-width));
+}
+
+body:has([value=narrow-layout]:checked) .h-card:has(.details:checked) dl {
+  flex-basis: 0%;
+}
+
+#h-cards.narrow-layout .h-card:has(.details:checked) dl {
+  flex-basis: 0%;
+}
+
+body:has([value=narrow-layout]:checked) .name-and-org {
+  flex: none;
+}
+
+#h-cards.narrow-layout .name-and-org {
+  flex: none;
+}
+
+body:has(#cb-h-tel:checked) dl.h-tel,
+body:has(#cb-u-email:checked) dl.u-email,
+body:has(#cb-h-adr:checked) dl.h-adr,
+body:has(#cb-u-url:checked) dl.u-url,
+body:has(#cb-u-social:checked) dl.u-social,
+body:has(#cb-dt-bday:checked) dl.dt-bday,
+body:has(#cb-p-note:checked) dl.p-note {
+  display: flex;
+}
+
+.show-p-note .p-note,
+.show-h-tel .h-tel,
+.show-h-adr .h-adr,
+.show-u-email .u-email,
+.show-u-url .u-url,
+.show-u-social .u-social,
+.show-dt-bday .dt-bday {
+  display: flex;
+}
+
+.h-card .details:checked {
+  align-self: start;
+  position: absolute;
+  inset-block-start: -.25rem;
+  inset-inline-start: -.5rem;
+  transform: scale(.6);
+}
+
+.h-card .details:not(:checked) {
+  display: none;
+}
+
+.h-card:not(:has(.details:checked)) label {
+  display: revert;
+  text-align: center;
+  cursor: pointer;
+  flex: 1;
+}
+
+#h-cards .h-card:not(:has(.details:checked)) :is(.p-name, .p-name+p, dl) {
+  display: none;
+}
+
+#h-cards .name-and-org:not(:has(.details:checked)) {
+  display: flex;
+  justify-content: start;
+  column-gap: .5rem;
+}
+
+.h-card:not(:has(.details:checked)) {
+  display: inline-block;
+}
+
+body:has( #font-size [value="1"]:checked) .h-card dd {
+font-size: var(--font-size-1);
+}
+
+body:has( #font-size [value="2"]:checked) .h-card dd {
+font-size: var(--font-size-2);
+}
+
+body:has( #font-size [value="fluid-0"]:checked) .h-card dd {
+font-size: var(--font-size-fluid-0);
+}
+
+body:has( #font-size [value="fluid-1"]:checked) .h-card dd {
+font-size: var(--font-size-fluid-1);
+}
+
+
+body:has( #font [value="100"]:checked) main {
+font-family: var(--font-system-ui);
+}
+body:has( #font [value="101"]:checked) main {
+font-family: var(--font-transitional);
+}
+body:has( #font [value="102"]:checked) main {
+font-family: var(--font-old-style);
+}
+body:has( #font [value="103"]:checked) main {
+font-family: var(--font-geometric-humanist);
+}
+body:has( #font [value="104"]:checked) main {
+font-family: var(--font-classical-humanist);
+}
+body:has( #font [value="105"]:checked) main {
+font-family: var(--font-);
+}
+body:has( #font [value="106"]:checked) main {
+font-family: var(--font-neo-grotesque);
+}
+body:has( #font [value="107"]:checked) main {
+font-family: var(--font-monospace-slab-serif);
+}
+body:has( #font [value="108"]:checked) main {
+font-family: var(--font-monospace-code);
+}
+body:has( #font [value="109"]:checked) main {
+font-family: var(--font-industrial);
+}
+body:has( #font [value="110"]:checked) main {
+font-family: var(--font-rounded-sans);
+}
+body:has( #font [value="111"]:checked) main {
+font-family: var(--font-slab-serif);
+}
+body:has( #font [value="112"]:checked) main {
+font-family: var(--font-antique);
+}
+body:has( #font [value="113"]:checked) main {
+font-family: var(--font-didone);
+}
+body:has( #font [value="114"]:checked) main {
+font-family: var(--font-handwritten);
+}
+body:has( #font [value="200"]:checked) main {
+font-family: fangsong;
+}

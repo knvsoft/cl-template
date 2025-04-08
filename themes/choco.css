@@ -1,0 +1,36 @@
+[data-theme="dark-choco"] {
+  color-scheme: dark;
+
+  --brand: var(--choco-5);
+  --text-1: var(--choco-1);
+  --text-2: var(--choco-2);
+  --surface-1: var(--choco-12);
+  --surface-2: var(--choco-11);
+  --surface-3: var(--choco-10);
+  --surface-4: var(--choco-9);
+  --surface-shadow: hsl(25, 65%, 11%);
+  --shadow-strength: 50%;
+
+  --actions-container-luminance: 85%;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-theme="dark-choco"] 
+  :where(textarea, select, input:not([type=button], [type=submit], [type=reset])) {
+    background-color: var(--surface-2);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  [data-theme="dark-choco"] {
+    --actions-container-luminance: 30%;
+    ::placeholder {
+      color: var(--gray-6);
+    }
+  }
+}
+
+[data-theme="dark-choco"] {
+  --scrolltop-bg: var(--surface-3);
+  --scrolltop-hover-bg: var(--surface-4);
+}

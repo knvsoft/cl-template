@@ -1,0 +1,86 @@
+*,
+:before,
+:after {
+  box-sizing: border-box
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0
+}
+
+html:focus-within {
+  scroll-behavior: smooth
+}
+
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5
+}
+
+a:not([class]) {
+  text-underline-offset: .15em;
+  text-decoration-thickness: max(.08em, 1px)
+}
+
+img,
+picture,
+svg {
+  max-width: 100%;
+  display: block
+}
+
+img[width] {
+  height: auto
+}
+
+svg {
+  fill: currentColor;
+  pointer-events: none
+}
+
+[id] {
+  scroll-margin-top: 2rem
+}
+
+:focus {
+  scroll-margin-bottom: 8vh
+}
+
+input,
+button,
+textarea,
+select {
+  font-family: system-ui, sans-serif;
+  font-size: 1rem
+}
+
+[hidden] {
+  display: none !important
+}
+
+@media (prefers-reduced-motion:reduce) {
+  html:focus-within {
+    scroll-behavior: auto
+  }
+
+  *,
+  :before,
+  :after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    -webkit-animation-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    -webkit-animation-iteration-count: 1 !important;
+    animation-iteration-count: 1 !important
+  }
+}

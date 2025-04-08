@@ -1,0 +1,73 @@
+@media (prefers-color-scheme:dark) {
+  body {
+    background: var(--body-bg-dark);
+  }
+
+  header,
+  .header {
+    background: var(--header-bg-dark);
+    outline: var(--header-outline-dark)
+  }
+
+  .menu>.hstack {
+    border-block-start: var(--menu-border-block-start-dark);
+  }
+
+  header,
+  .header,
+  .actions-container,
+  .h-card,
+  .name-and-org {
+    box-shadow: var(--box-shadow-dark);
+  }
+
+  .actions-container {
+    background-color: var(--background-secondary-dark);
+  }
+
+  .actions-container .export {
+    border-block-start: none;
+  }
+
+  .copy-export-details dl {
+    background: var(--details-item-bg-dark);
+  }
+
+  .name-and-org {
+    box-shadow: var(--name-and-org-box-shadow-dark);
+    background-color: var(--h-card-name-bg-dark);
+  }
+
+  
+  .h-card a:hover,
+  .h-card a:focus {
+    color: var(--link-hover-color-dark);
+  }
+
+  dt,
+  .comment-label {
+    color: var(--label-color-dark);
+  }
+
+  dl:not(.p-note) {
+    box-shadow: var(--property-box-shadow-dark);
+  }
+
+  .editable {
+    background: var(--editable-bg-dark);
+    outline: var(--editable-outline-dark);
+  }
+
+  .editable[contenteditable]:hover,
+  .editable:focus-visible {
+    box-shadow: var(--editable-hover-box-shadow-dark);
+  }
+
+  input {
+    background-color: var(--field-bg-dark);
+  }
+
+  input:is([type="text"], [type="search"]) {
+      outline: var(--editable-outline-dark);
+  }
+}

@@ -1,0 +1,69 @@
+@media (prefers-reduced-motion: no-preference) {
+  #list-title {
+    opacity: 0;
+    animation: var(--animation-fade-in) forwards, var(--animation-slide-in-up) forwards;
+    animation-timing-function: var(--ease-out-5);
+    animation-delay: .2s;
+  }
+
+  #list-comment {
+    opacity: 0;
+    animation: var(--animation-fade-in) forwards, var(--animation-slide-in-down) forwards;
+    animation-timing-function: var(--ease-out-5);
+    animation-delay: .2s;
+  }
+}
+
+
+@media (prefers-reduced-motion: no-preference) {
+  /* when the details are checked */
+  body:has(#cb-h-tel:checked) dl.h-tel,
+  body:has(#cb-u-email:checked) dl.u-email,
+  body:has(#cb-h-adr:checked) dl.h-adr,
+  body:has(#cb-u-url:checked) dl.u-url,
+  body:has(#cb-u-social:checked) dl.u-social,
+  body:has(#cb-dt-bday:checked) dl.dt-bday,
+  body:has(#cb-p-note:checked) dl.p-note {
+    transition:
+      opacity .5s ease-in,
+      scale .5s ease-in,
+      display .5s ease-in;
+    /* key to transitioning out */
+    transition-behavior: allow-discrete;
+
+    @starting-style {
+      opacity: 0;
+      scale: 1.1;
+    }
+  }
+
+  body:not(:has(#cb-h-tel:checked)) dl.h-tel,
+  body:not(:has(#cb-u-email:checked)) dl.u-email,
+  body:not(:has(#cb-h-adr:checked)) dl.h-adr,
+  body:not(:has(#cb-u-url:checked)) dl.u-url,
+  body:not(:has(#cb-u-social:checked)) dl.u-social,
+  body:not(:has(#cb-dt-bday:checked)) dl.dt-bday,
+  body:not(:has(#cb-p-note:checked)) dl.p-note,
+  #h-cards .h-card:not(:has(.details:checked)) :is(.p-name, .p-name+p, dl) {
+    opacity: 0;
+    scale: .9;
+    display: none;
+    transition-behavior: allow-discrete;
+    transition-duration: .4s;
+    transition-timing-function: var(--ease-out-5);
+  }
+
+  .h-card:not(:has(.details:checked)) label {
+    transition:
+      opacity .2s ease-in,
+      scale .2s ease-in,
+      display .2s ease-in;
+    transition-behavior: allow-discrete;
+    transition-delay: 425ms;
+
+    @starting-style {
+      opacity: 0;
+      scale: 1.1;
+    }
+  }
+}

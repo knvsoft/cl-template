@@ -1,0 +1,66 @@
+@media print {
+
+  @page {
+    margin: 1rem 0;
+  }
+
+  .menu, .screen-only, button {
+      display: none;
+  }
+
+  #show-menu,
+  .toggle-fullscreen-btn,
+  .details.switch
+  {
+      visibility: hidden;
+  }
+
+  body {
+    line-height: 1.3;
+    background: white !important;
+    color: #000;
+    margin: 5mm;
+  }
+
+  .h-card {
+    border-style: solid;
+    border-width: .5pt;
+    box-shadow: none;
+    margin-block: 1rem;
+    break-inside: avoid-page;
+    position: relative;
+  }
+
+  .h-card:not(:has(.details:checked)) {
+    display: none;
+  }
+
+  #h-cards.wide-layout, body:has(#print-single-column:checked) #h-cards {
+    display: flow-root;
+  }
+
+  .card-counter {
+    display: none;
+    padding: .25em .6em;
+    text-align: end;
+    font-size: x-small;
+    font-weight: lighter;
+    opacity: 0.6;
+
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-end: 0;
+  }
+
+  body:has(#show-card-counter:checked) .card-counter {
+    display: block;
+  }
+
+  .scrolltop-wrap {
+    display: none !important;
+  }
+
+  :root {
+    color-scheme: light;
+  }
+}

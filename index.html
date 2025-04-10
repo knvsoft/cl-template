@@ -92,6 +92,17 @@
 </style>
 
 <style data-rm-cp>
+  .develop {
+    padding-block-end: var(--size-7);
+    display: flex;
+    flex-flow: column wrap;
+    font-size: var(--font-size-2);
+    text-align: center;
+    line-height: 2;
+    min-height: var(--size-8);
+    place-content: center;
+  }
+
   .acknowledgement {
   display: flex;
   flex-flow: column wrap;
@@ -100,6 +111,14 @@
   line-height: 2;
   min-height: var(--size-8);
   place-content: center;
+}
+a.github {
+    display: inline-block;
+    color: hsl(0,0%,33%);
+    border: 2px solid hsla(0,0%,33%,0.5);
+    border-radius: 4px;
+    letter-spacing: 1px;
+    padding: 5px 10px;
 }
 </style>
 
@@ -311,10 +330,11 @@ Narrow
 <hr class="end-of-listing">
 <p class="end-of-listing"><br></p>
 
-<div data-rm-cp>
+<div class="develop" data-rm-cp>
   <div class="acknowledgement">
     <a href="https://knvsoft.com/contactslister/acknowledgement/" target="_blank" rel="noopener">Acknowledgement</a>
   </div>
+  <a href="https://github.com/knvsoft/cl-template" class="github" data-tooltip="Contacts Lister Template Project" title="Contacts Lister Template Project">Project Page on GitHub</a>
 </div>
 
 <div class="scrolltop-wrap" data-rm-cp="">

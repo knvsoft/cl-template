@@ -30,6 +30,8 @@ body:
       label: Expected behavior
       description: >-
         A clear and concise description of what you expected to happen.
+    validations:
+      required: true
 
   - type: dropdown
     attributes:
@@ -40,12 +42,14 @@ body:
         - Firefox
         - Edge
         - Other
+    validations:
+      required: true
 
   - type: input
     attributes:
       label: Brower version
-      validations:
-        required: true
+    validations:
+      required: true
       
   - type: textarea
     attributes:

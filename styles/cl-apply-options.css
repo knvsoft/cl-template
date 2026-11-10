@@ -37,7 +37,7 @@
   body:has([value=narrow-layout]:checked) .h-card {
     flex-flow: column;
     flex-grow: 1;
-    min-width: calc(var(--h-card-narrow-width) * var(--base-unit-for-width));
+    min-width: min(100%, calc(var(--h-card-narrow-width) * var(--base-unit-for-width)));
   }
 
   #h-cards.narrow-layout .h-card {
@@ -127,7 +127,7 @@
 
   /* Collapsed: the name (muted) and the organisation line stay; the details and the comment go */
   #h-cards .h-card:not(:has(.details:checked)) {
-    padding: var(--space-xs);
+    padding: var(--space-xs) var(--gutter-xs);
     box-shadow: none;
   }
 

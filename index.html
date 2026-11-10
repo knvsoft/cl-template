@@ -8,119 +8,22 @@
 <meta name="description" content="Contacts Listing produced by Contacts Lister 2.2">
 <meta name="robots" content="noindex">
 
-<link rel="stylesheet" href="styles/cl-reset.css" media="print, screen">
-
-<style id="open-props" data-rm-cp>
-@import url("https://cdn.jsdelivr.net/npm/open-props/open-props.min.css") print, screen;
-@import url("https://cdn.jsdelivr.net/npm/open-props/normalize.min.css") print, screen;
-@import url("https://cdn.jsdelivr.net/npm/open-props/colors-hsl.min.css") print, screen;
-@import url("https://cdn.jsdelivr.net/npm/open-props/theme.light.switch.min.css") print, screen;
-@import url("https://cdn.jsdelivr.net/npm/open-props/theme.dark.switch.min.css") print, screen;
-@import url("https://cdn.jsdelivr.net/npm/open-props/buttons.min.css") screen;
-</style>
-
-<style id="themes" data-rm-cp>
-@import url("themes/dark.css") print, screen;
-@import url("themes/light.css") print, screen;
-@import url("themes/dim.css") print, screen;
-@import url("themes/grape.css") print, screen;
-@import url("themes/choco.css") print, screen;
-@import url("themes/switch.css") print, screen;
-@import url("themes/clBlue.css") print, screen;
-@import url("themes/apply-theme.css") print, screen;
-</style>
+<link rel="stylesheet" href="styles/cl.css" media="print, screen">
 
 <style id="cl-css-vars" data-rm-cp>
 :where(html) {
   --body-font: initial;
-  --body-margin-block: 1rem;
-  --body-margin-inline: 1rem;
-  --body-min-width: 40rem;
-  --line-height: 1.5;
-  --border-radius: .2rem;
   --menu-font: var(--font-system-ui);
-  --menu-section-max-width: 80rem;
-  --h-cards-gap: 1rem;
-  --h-cards-padding-block-end: .5rem;
-  --actions-container-height: 2rem;
-  --h-card-min-width: 24rem;
   --h-card-narrow-width: 24;
   --h-card-narrow-width-unit: rem;
   --base-unit-for-width: 1rem;
-  --field-flex-basis: 18rem;
-  --editable-line-height: 1.4;
-  --editable-padding: .5em;
   --editable-font: monospace;
-  --field-font-size: var(--font-size-1);
-  --input-padding: .3em;
+  --field-font-size: var(--step-0);
   --list-title-font: inherit;
-  --list-title-font-size: 1rem;
-  --label-font-size: .8rem;
-  --label-font-weight: revert;
-  --label-line-height: 1.2;
-  --fieldset-legend-min-width: 3rem;
-  --fieldset-inside-menu-max-width: 27rem;
-  --menu-fieldset-grid-min-col-width: 9rem;
-  --show-menu-display: flex;
-  --gutter: 1.5rem;
-  --checkbox-radio-inline-size: var(--size-3);
   }
 </style>
 
-<style id="css-main" >
-@import url("styles/cl-main.css") print, screen;
-</style>
-
-<style id="css-for-menus" media="screen" data-rm-cp>
-@import url("styles/cl-menu.css") screen;
-</style>
-
-<style id="styles/css-options-applied">
-</style>
-
-<style id="css-apply-options" data-rm-cp>
-@import url("styles/cl-apply-options.css") print, screen;
-@import url("styles/cl-animation.css") screen;
-</style>
-
-<style id="css-dark-mode" >
-@import url("styles/cl-dark-mode.css") print, screen;
-</style>
-
-<style id="print" >
-@import url("styles/cl-print.css") print;
-</style>
-
-<style data-rm-cp>
-  .develop {
-    padding-block-end: var(--size-7);
-    display: flex;
-    flex-flow: column wrap;
-    font-size: var(--font-size-2);
-    text-align: center;
-    line-height: 2;
-    min-height: var(--size-8);
-    place-content: center;
-  }
-
-  .acknowledgement {
-  display: flex;
-  flex-flow: column wrap;
-  font-size: var(--font-size-2);
-  text-align: center;
-  line-height: 2;
-  min-height: var(--size-8);
-  place-content: center;
-}
-a.github {
-    display: inline-block;
-    color: hsl(0,0%,33%);
-    border: 2px solid hsla(0,0%,33%,0.5);
-    border-radius: 4px;
-    letter-spacing: 1px;
-    padding: 5px 10px;
-}
-</style>
+<link rel="stylesheet" href="styles/cl-apply-options.css" media="print, screen">
 
 </head>
 <body id="_2GUxfjrYuxCgwjc5HAS8tU" data-revision="0" data-theme="clBlue"><time id="exported_at" datetime="2025-04-03T15:50:12Z"></time>
@@ -129,7 +32,7 @@ a.github {
 <header class="vstack">
 <h1 id="list-title" class="editable" contenteditable="" aria-label="List title">Contacts List - Apr 3, 2025</h1>
 <div id="list-comment-label" class="list-comment-label">Comment:</div>
-<div id="list-comment" class="editable" contenteditable=""></div>
+<div id="list-comment" class="editable" contenteditable="" data-placeholder="Comment…"></div>
     <form id="top-form" class="hstack header-top" onsubmit="return false;">
       <div id="show-menu" class="hstack" data-rm-cp="">
         <div>
@@ -143,46 +46,40 @@ a.github {
         </div>
       </div>
 <!-- header-top --></form>
-<form id="menu" class="menu vstack" data-rm-cp="" onsubmit="return false;">
+<form id="menu" class="menu" data-rm-cp onsubmit="return false;" aria-label="List options">
+<div class="menu-groups">
 
-<div class="hstack">
-<div class="sub-menu-items">
-
-<fieldset data-target="#h-cards" data-action="toggleLayout" name="layout" data-js-req="">
-<legend>Layout:</legend>
-
-<label>
-<input id="wide-layout" type="radio" name="layout" value="wide-layout" checked="">
-Wide
-</label>
-
-<div class="narrow-option-stack">
-<label>
-<input id="narrow-layout" type="radio" name="layout" value="narrow-layout">
-Narrow
-</label>
-
-<div class="range-wrap">
-<input id="h-card-width" data-action="setNarrowWidth" type="range" min="24" max="48" title="Adjust card width">
+<fieldset class="menu-group" data-target="#h-cards" data-action="toggleLayout" name="layout" data-js-req>
+<legend>Layout</legend>
+<div class="segmented">
+<label><input id="wide-layout" type="radio" name="layout" value="wide-layout" checked> Wide</label>
+<label><input id="narrow-layout" type="radio" name="layout" value="narrow-layout"> Narrow</label>
 </div>
-
-<div>
-<label for="narrow-justify">Justify cards<!-- -->:</label>
-
+<div class="narrow-only">
+<div class="field">
+<label for="h-card-width">Card width</label>
+<div class="range-row">
+<input id="h-card-width" data-action="setNarrowWidth" type="range" min="24" max="48" value="24">
+<output id="h-card-width-value" for="h-card-width">24</output>
+</div>
+</div>
+<div class="field">
+<label for="narrow-justify">Arrange cards</label>
 <select id="narrow-justify">
-<option value="start" selected>start</option>
-<option value="center">center</option>
-<option value="space-between">space-between</option>
-<option value="space-around">space-around</option>
-<option value="space-evenly">space-evenly</option>
+<option value="start" selected>From the start</option>
+<option value="center">Centred</option>
+<option value="space-between">Spread to the edges</option>
+<option value="space-around">Even space around</option>
+<option value="space-evenly">Even gaps</option>
 </select>
 </div>
-
 </div>
 </fieldset>
 
-<fieldset>
-<label for="font">Font:</label>
+<fieldset class="menu-group">
+<legend>Text</legend>
+<div class="field">
+<label for="font">Font</label>
 <select id="font" data-action="setBodyFont">
 <optgroup label="Modern Font Stacks">
   <option value="100" selected="">System UI
@@ -205,60 +102,51 @@ Narrow
   <option value="200">Fangsong
 </option></optgroup>
 </select>
-</fieldset>
-
-<fieldset>
-<label for="font-size">Font Size:</label>
+</div>
+<div class="field">
+<label for="font-size">Size</label>
 <select id="font-size" data-action="setFontSize">
-<option value="1">Fixed 1</option>
-<option value="2">Fixed 2</option>
-<option value="fluid-0">Fluid 1</option>
-<option value="fluid-1">Fluid 2</option>
+<option value="1">Standard</option>
+<option value="2">Large</option>
+<option value="fluid-0">Standard, grows with the window</option>
+<option value="fluid-1">Large, grows with the window</option>
 </select>
+</div>
 </fieldset>
 
-<fieldset>
-<label for="theme">Theme:</label>
-<select id="theme" data-action="setTheme">
-<option value="clBlue" selected>CL Blue</option>
-<option value="auto">Auto</option>
+<fieldset class="menu-group">
+<legend>Colour</legend>
+<div class="field">
+<label for="theme">Theme</label>
+<select id="theme" data-action="setTheme" aria-describedby="theme-hint">
+<option value="clBlue" selected>Contacts Lister</option>
+<option value="auto">Neutral</option>
 <option value="light">Light</option>
 <option value="dark">Dark</option>
 <option value="dark-dim">Dim</option>
-<option value="light-grape">Grape (light)</option>
-<option value="dark-choco">Choco (dark)</option>
+<option value="light-grape">Grape</option>
+<option value="dark-choco">Choco</option>
 </select>
+<span class="hint" id="theme-hint">Contacts Lister and Neutral follow your device's light or dark setting.</span>
+</div>
+</fieldset>
+
+<fieldset class="menu-group" id="printing-options">
+<legend>Printing</legend>
+<label class="check"><input id="show-card-counter" type="checkbox"> <span>Number each card <span class="hint">e.g. 3 of 12</span></span></label>
+<label class="check"><input id="print-single-column" type="checkbox"> <span>One column <span class="hint">Keeps cards from splitting across pages in Safari and Firefox</span></span></label>
+</fieldset>
+
+<fieldset class="menu-group" id="changes-section" data-js-req>
+<legend>Saved settings</legend>
+<p class="hint" id="reset-hint">Layout, text and colour choices are kept in this browser.</p>
+<div class="button-row">
+<button type="button" id="reset-changes" data-action="resetChanges" aria-describedby="reset-hint">Reset this list<span class="notice" data-notice="Settings reset." hidden></span></button>
+<button type="button" id="reset-all" class="destructive" data-action="resetAll" aria-describedby="reset-hint">Reset all lists<span class="notice" data-notice="Cleared data." hidden></span></button>
+</div>
 </fieldset>
 
 </div>
-<!-- viewing-options --></div>
-
-<details>
-  <summary>Option for printouts</summary>
-  <fieldset id="printing-options">
-  <div class="sub-menu-items">
-  <label>
-  <input id="show-card-counter" type="checkbox">
-  Show card number/total
-  </label>
-  <label>
-    <input id="print-single-column" type="checkbox">
-    Single column layout (to avoid page-break issues in Safari and Firefox)
-  </label>
-  </div>
-  </fieldset>
-</details>
-
-<details id="changes-section" data-js-req="">
-<summary>Clear saved settings</summary>
-<fieldset>
-  <div class="sub-menu-items">
-    <button type="reset" id="reset-changes" data-action="resetChanges">For this list<span class="notice" data-notice="Settings reset." hidden=""></span></button>
-    <button type="reset" id="reset-all" data-action="resetAll">For all lists<span class="notice" data-notice="Cleared data." hidden=""></span></button>
-  </div>
-</fieldset>
-</details>
-
 <!-- menu --></form>
 </header>
 <form class="menu actions-container" data-rm-cp="" data-js-req="" onsubmit="return false;">
@@ -306,36 +194,33 @@ Narrow
 
 <!-- actions-container --></form>
 <main id="h-cards" data-filter-list="" class="wide-layout p-note h-tel h-adr u-email u-url u-social dt-bday">
-<article class="h-card" id="_9Sq4fS29mSmYKwzzsFkGxw"><div class="name-and-org"><input type="checkbox" id="crd1" class="details switch" checked="" data-rm-cp="" title="Show card details for: Arden Bentley"><label for="crd1" title="Show card details for: Arden Bentley">Show card details</label><h2 class="p-name">Arden Bentley</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(811)%20203-1700">(811) 203-1700</a></dd></div><div><dt>work</dt><dd><a href="tel:(780)%20740-8485">(780) 740-8485</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=Ap%20%23715-1102%20Nec%20Ave,Valdez,Indiana">Ap #715-1102 Nec Ave<br>Indiana 29145</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:velit@quistristique.org">velit@quistristique.org</a></dd></div><div><dt>work</dt><dd><a href="mailto:Etiam.bibendum.fermentum@variuseteuismod.edu">Etiam<wbr>.bibendum<wbr>.fermentum<wbr>@variuseteuismod<wbr>.edu</a></dd></div></dl>
+<article class="h-card" id="_9Sq4fS29mSmYKwzzsFkGxw"><div class="name-and-org"><input type="checkbox" id="crd1" class="details switch" checked="" data-rm-cp="" title="Show card details for: Arden Bentley"><label for="crd1" title="Show card details for: Arden Bentley">Show card details</label><h2 class="p-name">Arden Bentley</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" data-placeholder="Comment…" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(811)%20203-1700">(811) 203-1700</a></dd></div><div><dt>work</dt><dd><a href="tel:(780)%20740-8485">(780) 740-8485</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=Ap%20%23715-1102%20Nec%20Ave,Valdez,Indiana">Ap #715-1102 Nec Ave<br>Indiana 29145</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:velit@quistristique.org">velit@quistristique.org</a></dd></div><div><dt>work</dt><dd><a href="mailto:Etiam.bibendum.fermentum@variuseteuismod.edu">Etiam<wbr>.bibendum<wbr>.fermentum<wbr>@variuseteuismod<wbr>.edu</a></dd></div></dl>
 <div class="card-counter">1 of 7</div></article>
-<article class="h-card" id="_qrmS2A5YuPX7UkrNamkq8G"><div class="name-and-org"><input type="checkbox" id="crd2" class="details switch" checked="" data-rm-cp="" title="Show card details for: Coby Boone"><label for="crd2" title="Show card details for: Coby Boone">Show card details</label><h2 class="p-name">Coby Boone</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(843)%20262-1079">(843) 262-1079</a></dd></div><div><dt>work</dt><dd><a href="tel:(310)%20472-4796">(310) 472-4796</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=5464%20Rutrum.%20Ave,Rolling%20Hills%20Estates,Louisiana">5464 Rutrum. Ave<br>Louisiana 70242</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:mus.Proin.vel@cursusa.ca">mus.Proin.vel@cursusa.ca</a></dd></div><div><dt>work</dt><dd><a href="mailto:mi.felis@dolorNullasemper.com">mi.felis@dolorNullasemper.com</a></dd></div></dl>
+<article class="h-card" id="_qrmS2A5YuPX7UkrNamkq8G"><div class="name-and-org"><input type="checkbox" id="crd2" class="details switch" checked="" data-rm-cp="" title="Show card details for: Coby Boone"><label for="crd2" title="Show card details for: Coby Boone">Show card details</label><h2 class="p-name">Coby Boone</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" data-placeholder="Comment…" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(843)%20262-1079">(843) 262-1079</a></dd></div><div><dt>work</dt><dd><a href="tel:(310)%20472-4796">(310) 472-4796</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=5464%20Rutrum.%20Ave,Rolling%20Hills%20Estates,Louisiana">5464 Rutrum. Ave<br>Louisiana 70242</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:mus.Proin.vel@cursusa.ca">mus.Proin.vel@cursusa.ca</a></dd></div><div><dt>work</dt><dd><a href="mailto:mi.felis@dolorNullasemper.com">mi.felis@dolorNullasemper.com</a></dd></div></dl>
 <div class="card-counter">2 of 7</div></article>
-<article class="h-card" id="_utpaCyevPcJ49HbsAz7wei"><div class="name-and-org"><input type="checkbox" id="crd3" class="details switch" checked="" data-rm-cp="" title="Show card details for: Gary Booth"><label for="crd3" title="Show card details for: Gary Booth">Show card details</label><h2 class="p-name">Gary Booth</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(533)%20852-3749">(533) 852-3749</a></dd></div><div><dt>work</dt><dd><a href="tel:(898)%20801-9733">(898) 801-9733</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=238-2095%20Donec%20St.,Weymouth,Mississippi">238-2095 Donec St.<br>Mississippi 48272</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:consectetuer.cursus.et@massa.com">consectetuer.cursus.et@massa.com</a></dd></div><div><dt>work</dt><dd><a href="mailto:nunc.sit@aliquet.org">nunc.sit@aliquet.org</a></dd></div></dl>
+<article class="h-card" id="_utpaCyevPcJ49HbsAz7wei"><div class="name-and-org"><input type="checkbox" id="crd3" class="details switch" checked="" data-rm-cp="" title="Show card details for: Gary Booth"><label for="crd3" title="Show card details for: Gary Booth">Show card details</label><h2 class="p-name">Gary Booth</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" data-placeholder="Comment…" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(533)%20852-3749">(533) 852-3749</a></dd></div><div><dt>work</dt><dd><a href="tel:(898)%20801-9733">(898) 801-9733</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=238-2095%20Donec%20St.,Weymouth,Mississippi">238-2095 Donec St.<br>Mississippi 48272</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:consectetuer.cursus.et@massa.com">consectetuer.cursus.et@massa.com</a></dd></div><div><dt>work</dt><dd><a href="mailto:nunc.sit@aliquet.org">nunc.sit@aliquet.org</a></dd></div></dl>
 <div class="card-counter">3 of 7</div></article>
-<article class="h-card" id="_w6xje7fj4dXkJCe3JNvJ6o"><div class="name-and-org"><input type="checkbox" id="crd4" class="details switch" checked="" data-rm-cp="" title="Show card details for: Lysandra Arnold"><label for="crd4" title="Show card details for: Lysandra Arnold">Show card details</label><h2 class="p-name">Lysandra Arnold</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(337)%20528-0683">(337) 528-0683</a></dd></div><div><dt>work</dt><dd><a href="tel:(723)%20786-3818">(723) 786-3818</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=6010%20Risus.%20Rd.,Newport%20News,Arkansas">6010 Risus. Rd.<br>Arkansas 3291</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:tortor.dictum.eu@semut.ca">tortor.dictum.eu@semut.ca</a></dd></div><div><dt>work</dt><dd><a href="mailto:Suspendisse.non.leo@congue.ca">Suspendisse.non.leo@congue.ca</a></dd></div></dl>
+<article class="h-card" id="_w6xje7fj4dXkJCe3JNvJ6o"><div class="name-and-org"><input type="checkbox" id="crd4" class="details switch" checked="" data-rm-cp="" title="Show card details for: Lysandra Arnold"><label for="crd4" title="Show card details for: Lysandra Arnold">Show card details</label><h2 class="p-name">Lysandra Arnold</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" data-placeholder="Comment…" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(337)%20528-0683">(337) 528-0683</a></dd></div><div><dt>work</dt><dd><a href="tel:(723)%20786-3818">(723) 786-3818</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=6010%20Risus.%20Rd.,Newport%20News,Arkansas">6010 Risus. Rd.<br>Arkansas 3291</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:tortor.dictum.eu@semut.ca">tortor.dictum.eu@semut.ca</a></dd></div><div><dt>work</dt><dd><a href="mailto:Suspendisse.non.leo@congue.ca">Suspendisse.non.leo@congue.ca</a></dd></div></dl>
 <div class="card-counter">4 of 7</div></article>
-<article class="h-card" id="_aPPYCwa1n8cfDbnwejNnV6"><div class="name-and-org"><input type="checkbox" id="crd5" class="details switch" checked="" data-rm-cp="" title="Show card details for: Remedios Blankenship"><label for="crd5" title="Show card details for: Remedios Blankenship">Show card details</label><h2 class="p-name">Remedios Blankenship</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(455)%20896-5041">(455) 896-5041</a></dd></div><div><dt>work</dt><dd><a href="tel:(219)%20616-7284">(219) 616-7284</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=Ap%20%23656-9275%20Nulla%20St.,Rancho%20Palos%20Verdes,South%20Dakota">Ap #656-9275 Nulla St.<br>South Dakota 70601</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:Quisque.imperdiet.erat@faucibus.ca">Quisque<wbr>.imperdiet<wbr>.erat<wbr>@faucibus<wbr>.ca</a></dd></div><div><dt>work</dt><dd><a href="mailto:faucibus.ut@pedeacurna.com">faucibus.ut@pedeacurna.com</a></dd></div></dl>
+<article class="h-card" id="_aPPYCwa1n8cfDbnwejNnV6"><div class="name-and-org"><input type="checkbox" id="crd5" class="details switch" checked="" data-rm-cp="" title="Show card details for: Remedios Blankenship"><label for="crd5" title="Show card details for: Remedios Blankenship">Show card details</label><h2 class="p-name">Remedios Blankenship</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" data-placeholder="Comment…" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(455)%20896-5041">(455) 896-5041</a></dd></div><div><dt>work</dt><dd><a href="tel:(219)%20616-7284">(219) 616-7284</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=Ap%20%23656-9275%20Nulla%20St.,Rancho%20Palos%20Verdes,South%20Dakota">Ap #656-9275 Nulla St.<br>South Dakota 70601</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:Quisque.imperdiet.erat@faucibus.ca">Quisque<wbr>.imperdiet<wbr>.erat<wbr>@faucibus<wbr>.ca</a></dd></div><div><dt>work</dt><dd><a href="mailto:faucibus.ut@pedeacurna.com">faucibus.ut@pedeacurna.com</a></dd></div></dl>
 <div class="card-counter">5 of 7</div></article>
-<article class="h-card" id="_f8NJ4zyQA7wfxxtsiMr25z"><div class="name-and-org"><input type="checkbox" id="crd6" class="details switch" checked="" data-rm-cp="" title="Show card details for: Rowan Ashley"><label for="crd6" title="Show card details for: Rowan Ashley">Show card details</label><h2 class="p-name">Rowan Ashley</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(815)%20380-9365">(815) 380-9365</a></dd></div><div><dt>work</dt><dd><a href="tel:(148)%20960-7684">(148) 960-7684</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=3500%20Pede%20Ave,Rancho%20Cucamonga,Nevada">3500 Pede Ave<br>Nevada 21037</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:mauris.eu@vitae.edu">mauris.eu@vitae.edu</a></dd></div><div><dt>work</dt><dd><a href="mailto:quis.diam.luctus@ullamcorper.org">quis.diam.luctus@ullamcorper.org</a></dd></div></dl>
+<article class="h-card" id="_f8NJ4zyQA7wfxxtsiMr25z"><div class="name-and-org"><input type="checkbox" id="crd6" class="details switch" checked="" data-rm-cp="" title="Show card details for: Rowan Ashley"><label for="crd6" title="Show card details for: Rowan Ashley">Show card details</label><h2 class="p-name">Rowan Ashley</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" data-placeholder="Comment…" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(815)%20380-9365">(815) 380-9365</a></dd></div><div><dt>work</dt><dd><a href="tel:(148)%20960-7684">(148) 960-7684</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=3500%20Pede%20Ave,Rancho%20Cucamonga,Nevada">3500 Pede Ave<br>Nevada 21037</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:mauris.eu@vitae.edu">mauris.eu@vitae.edu</a></dd></div><div><dt>work</dt><dd><a href="mailto:quis.diam.luctus@ullamcorper.org">quis.diam.luctus@ullamcorper.org</a></dd></div></dl>
 <div class="card-counter">6 of 7</div></article>
-<article class="h-card" id="_9NLHLuVTumHPMBfzTgFXQR"><div class="name-and-org"><input type="checkbox" id="crd7" class="details switch" checked="" data-rm-cp="" title="Show card details for: Tiger Benjamin"><label for="crd7" title="Show card details for: Tiger Benjamin">Show card details</label><h2 class="p-name">Tiger Benjamin</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(225)%20724-6667">(225) 724-6667</a></dd></div><div><dt>work</dt><dd><a href="tel:(117)%20726-7564">(117) 726-7564</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=Ap%20%23331-1294%20Non%20Avenue,Santa%20Clarita,Nevada">Ap #331-1294 Non Avenue<br>Nevada 22392</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:at.arcu.Vestibulum@rutrum.edu">at.arcu.Vestibulum@rutrum.edu</a></dd></div><div><dt>work</dt><dd><a href="mailto:et@vehiculaaliquet.org">et@vehiculaaliquet.org</a></dd></div></dl>
+<article class="h-card" id="_9NLHLuVTumHPMBfzTgFXQR"><div class="name-and-org"><input type="checkbox" id="crd7" class="details switch" checked="" data-rm-cp="" title="Show card details for: Tiger Benjamin"><label for="crd7" title="Show card details for: Tiger Benjamin">Show card details</label><h2 class="p-name">Tiger Benjamin</h2><dl class="p-note"><dt class="visually-hidden">comment</dt><dd class="p-note editable" contenteditable="" data-placeholder="Comment…" aria-label="contact card comment input"></dd></dl></div><dl class="h-tel"><div><dt>home</dt><dd><a href="tel:(225)%20724-6667">(225) 724-6667</a></dd></div><div><dt>work</dt><dd><a href="tel:(117)%20726-7564">(117) 726-7564</a></dd></div></dl><dl class="h-adr"><div><dt>home</dt><dd><a href="https://maps.apple.com/?address=Ap%20%23331-1294%20Non%20Avenue,Santa%20Clarita,Nevada">Ap #331-1294 Non Avenue<br>Nevada 22392</a></dd></div></dl><dl class="u-email"><div><dt>home</dt><dd><a href="mailto:at.arcu.Vestibulum@rutrum.edu">at.arcu.Vestibulum@rutrum.edu</a></dd></div><div><dt>work</dt><dd><a href="mailto:et@vehiculaaliquet.org">et@vehiculaaliquet.org</a></dd></div></dl>
 <div class="card-counter">7 of 7</div></article></main>
 
-<div id="created-time">
-    List created on:
-    4/3/2025, 11:50 AM
-</div>
+<footer class="list-footer">
+  <p id="created-time" class="list-footer-meta"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5"></rect><path d="M3.5 10h17M8 3v4M16 3v4"></path></svg><span>List created <time datetime="2025-04-03T11:50">3 April 2025 at 11:50 AM</time></span></p>
+  <nav class="list-footer-links" aria-label="About Contacts Lister" data-rm-cp>
+    <a href="https://knvsoft.com/contactslister/acknowledgement/" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg><span>Acknowledgements</span><svg class="icon icon--small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"></path></svg><span class="visually-hidden"> (opens in a new tab)</span></a>
+    <a href="https://github.com/knvsoft/cl-template" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 8 4.5 12l4 4M15.5 8l4 4-4 4M13.5 5.5l-3 13"></path></svg><span>List template on GitHub</span><svg class="icon icon--small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"></path></svg><span class="visually-hidden"> (opens in a new tab)</span></a>
+  </nav>
+  <p class="list-footer-credit">Made with <a href="https://knvsoft.com/contactslister/">Contacts Lister</a></p>
+</footer>
 <!-- faux-body --></div>
 
 <hr class="end-of-listing">
 <p class="end-of-listing"><br></p>
-
-<div class="develop" data-rm-cp>
-  <div class="acknowledgement">
-    <a href="https://knvsoft.com/contactslister/acknowledgement/" target="_blank" rel="noopener">Acknowledgement</a>
-  </div>
-  <a href="https://github.com/knvsoft/cl-template" class="github" data-tooltip="Contacts Lister Template Project" title="Contacts Lister Template Project">Project Page on GitHub</a>
-</div>
 
 <div class="scrolltop-wrap" data-rm-cp="">
   <a href="#" role="button" aria-label="Scroll to top">

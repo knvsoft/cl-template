@@ -1,0 +1,534 @@
+/* Contacts Lister list template 2.0. No third-party CSS.
+   Load styles/cl-apply-options.css after this file: it fills the "options" layer declared below.
+   Layers, lowest priority first. Per-list options sit above components; print is last. */
+@layer reset, tokens, themes, base, components, options, refinements, print;
+
+/* ───────────────────────── reset ───────────────────────── */
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  :where(body, h1, h2, h3, p, dl, dd, figure, fieldset) { margin: 0; }
+  :where(fieldset) { padding: 0; border: 0; min-inline-size: 0; }
+  :where(button, input, select, textarea) { font: inherit; color: inherit; }
+  :where(a) { color: inherit; }
+  [hidden] { display: none !important; }
+}
+
+/* ───────────────────────── tokens (tier 1: primitives) ───────────────────────── */
+@layer tokens {
+  :root {
+    /* Type scale: fluid between a 20rem and a 80rem viewport, in rem so the reader's text size applies.
+       Every step is capped (max ≤ 2.5 × min, WCAG 1.4.4); the reader's setting scales the whole range. */
+    --step--2: clamp(0.75rem, 0.73rem + 0.08vw, 0.8rem);
+    --step--1: clamp(0.83rem, 0.8rem + 0.13vw, 0.9rem);
+    --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+    --step-1: clamp(1.2rem, 1.12rem + 0.38vw, 1.42rem);
+    --step-2: clamp(1.44rem, 1.3rem + 0.7vw, 1.8rem);
+
+    /* Space scale */
+    --space-3xs: 0.25rem;
+    --space-2xs: 0.5rem;
+    --space-xs: 0.75rem;
+    --space-s: 1rem;
+    --space-m: clamp(1rem, 0.9rem + 0.5vw, 1.5rem);
+    --space-l: clamp(1.5rem, 1.3rem + 1vw, 2.25rem);
+
+    --radius-s: 0.375rem;
+    --radius-m: 0.75rem;
+    --radius-pill: 999rem;
+
+    --border-thin: 1px;
+    --border-thick: 2px;
+    --focus-offset: 2px;
+
+    --line-height-body: 1.5;
+    --line-height-tight: 1.2;
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-bold: 700;
+
+    --duration-quick: 150ms;
+    --ease-out: cubic-bezier(0.2, 0, 0, 1);
+
+    --measure-card: 18rem;          /* a field group's preferred width */
+    --measure-page: 80rem;
+    --measure-filter: 14rem;
+    --measure-menu: 15rem;          /* a menu group's minimum width before groups stack */
+    --target-min: 2.25rem;          /* control height; grows with the reader's text size */
+    --underline-offset: 0.15em;
+    --icon-size: 1.15em;
+    --icon-size-small: 0.85em;
+    --check-size: 1.15em;
+    --check-nudge: 0.2em;           /* aligns a checkbox with the first text line */
+    --target-min-touch: 2.75rem;    /* 44 pt where the pointer is a finger */
+
+    /* Switch geometry, relative to its own font size */
+    --switch-width: 2.25em;
+    --switch-height: 1.3em;
+    --switch-inset: 0.15em;
+    --switch-travel: 0.95em;
+
+    /* Print */
+    --print-page-margin: 12mm;
+    --print-body: 10.5pt;
+    --print-title: 16pt;
+    --print-counter: 7pt;
+    --print-gap: 4mm;
+    --print-pad: 3mm;
+    --print-radius: 2mm;
+    --print-inset: 1mm;
+    --print-hairline: 0.5pt;
+    --print-border: color-mix(in oklab, black 45%, white);
+    --print-rule: color-mix(in oklab, black 20%, white);
+    --print-label: color-mix(in oklab, black 65%, white);
+
+    /* Lightness steps used by every theme (oklch L). Themes may override the dark set. */
+    --l-page-light: 97%;   --l-page-dark: 17%;
+    --l-card-light: 99.5%; --l-card-dark: 22%;
+    --l-raised-light: 94%; --l-raised-dark: 27%;
+    --l-field-light: 100%; --l-field-dark: 14%;
+    --l-border-light: 58%; --l-border-dark: 52%;   /* ≥ 3:1 against cards (non-text contrast) */
+    --l-hairline-light: 88%; --l-hairline-dark: 32%;
+    --l-text-1-light: 22%; --l-text-1-dark: 95%;
+    --l-text-2-light: 44%; --l-text-2-dark: 76%;   /* labels: ≥ 4.5:1 on card and raised */
+
+    /* Font stacks: names kept for FontSelection.swift and saved page styles. */
+    --font-system-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-transitional: Charter, "Bitstream Charter", "Sitka Text", Cambria, serif;
+    --font-old-style: "Iowan Old Style", "Palatino Linotype", "URW Palladio L", P052, serif;
+    --font-humanist: Seravek, "Gill Sans Nova", Ubuntu, Calibri, "DejaVu Sans", sans-serif;
+    --font-geometric-humanist: Avenir, Montserrat, Corbel, "URW Gothic", sans-serif;
+    --font-classical-humanist: Optima, Candara, "Noto Sans", sans-serif;
+    --font-neo-grotesque: Inter, Roboto, "Helvetica Neue", "Arial Nova", Arial, sans-serif;
+    --font-monospace-slab-serif: "Nimbus Mono PS", "Courier New", monospace;
+    --font-monospace-code: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --font-industrial: Bahnschrift, "DIN Alternate", "Franklin Gothic Medium", sans-serif;
+    --font-rounded-sans: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, "Arial Rounded MT", sans-serif;
+    --font-slab-serif: Rockwell, "Rockwell Nova", "Roboto Slab", "DejaVu Serif", serif;
+    --font-antique: Superclarendon, "Bookman Old Style", "URW Bookman", Georgia, serif;
+    --font-didone: Didot, "Bodoni MT", "Noto Serif Display", serif;
+    --font-handwritten: "Segoe Print", "Bradley Hand", Chilanka, cursive;
+
+    /* Narrow layout: names the list script (setNarrowWidth) and cl-apply-options already use */
+    --h-card-narrow-width: 24;      /* unitless; the Card width slider sets it (24–48) */
+    --base-unit-for-width: 1rem;
+
+    --sticky-gap: var(--space-2xs);
+    --glass-mix: 82%;               /* how opaque the sticky filter bar stays over cards */
+    --glass-blur: 12px;
+    --scrolltop-size: 2.75rem;
+    --scrolltop-reveal: 30rem;      /* scrolled distance at which "back to top" has fully appeared */
+    --deferred-card-height: 12rem;  /* placeholder height for cards rendered on demand */
+
+    /* Back-compat aliases used by the per-list options (cl-apply-options) */
+    --font-size-1: var(--step-0);
+    --font-size-2: var(--step-1);
+    --font-size-fluid-0: var(--step-0);
+    --font-size-fluid-1: var(--step-1);
+    --font-: var(--font-humanist);   /* option 105 in cl-apply-options reads this (Humanist) */
+  }
+  @media (pointer: coarse) { :root { --target-min: var(--target-min-touch); } }
+}
+
+/* ───────────────────────── themes (tier 2: one hue + scheme per theme) ───────────────────────── */
+@layer themes {
+  :root,
+  [data-theme] {
+    /* Defaults = clBlue, which follows the system */
+    color-scheme: light dark;
+    --hue: 220;
+    --tint: 0.02;
+    --accent-light: oklch(49% 0.09 220);   /* ≈ #23728C, the app's light accent */
+    --accent-dark: oklch(78% 0.12 220);    /* ≈ #41C4EF, the app's dark accent */
+
+    --surface-page: light-dark(oklch(var(--l-page-light) var(--tint) var(--hue)), oklch(var(--l-page-dark) var(--tint) var(--hue)));
+    --surface-card: light-dark(oklch(var(--l-card-light) calc(var(--tint) / 3) var(--hue)), oklch(var(--l-card-dark) var(--tint) var(--hue)));
+    --surface-raised: light-dark(oklch(var(--l-raised-light) var(--tint) var(--hue)), oklch(var(--l-raised-dark) var(--tint) var(--hue)));
+    --surface-field: light-dark(oklch(var(--l-field-light) 0 0), oklch(var(--l-field-dark) var(--tint) var(--hue)));
+    --border: light-dark(oklch(var(--l-border-light) var(--tint) var(--hue)), oklch(var(--l-border-dark) var(--tint) var(--hue)));
+    --hairline: light-dark(oklch(var(--l-hairline-light) var(--tint) var(--hue)), oklch(var(--l-hairline-dark) var(--tint) var(--hue)));
+    --text-1: light-dark(oklch(var(--l-text-1-light) calc(var(--tint) * 1.5) var(--hue)), oklch(var(--l-text-1-dark) calc(var(--tint) / 2) var(--hue)));
+    --text-2: light-dark(oklch(var(--l-text-2-light) calc(var(--tint) * 1.5) var(--hue)), oklch(var(--l-text-2-dark) var(--tint) var(--hue)));
+    --accent: light-dark(var(--accent-light), var(--accent-dark));
+    --shadow-color: light-dark(oklch(30% var(--tint) var(--hue) / 0.12), oklch(0% 0 0 / 0.5));
+    --shadow-card: 0 1px 2px var(--shadow-color), 0 2px 8px var(--shadow-color);
+    --focus-ring: var(--border-thick) solid var(--accent);
+    --danger: light-dark(oklch(50% 0.18 25), oklch(75% 0.14 25));
+  }
+
+  [data-theme="light"] { color-scheme: light; --tint: 0.004; }
+  [data-theme="dark"]  { color-scheme: dark;  --tint: 0.004; --l-page-dark: 10%; --l-card-dark: 15%; --l-raised-dark: 20%; }
+  [data-theme="dark-dim"] {
+    color-scheme: dark; --tint: 0.008;
+    --l-page-dark: 32%; --l-card-dark: 37%; --l-raised-dark: 42%; --l-field-dark: 28%;
+    --l-hairline-dark: 46%; --l-border-dark: 62%; --l-text-2-dark: 85%;
+  }
+  [data-theme="light-grape"] {
+    color-scheme: light; --hue: 310; --tint: 0.035;
+    --accent-light: oklch(48% 0.16 310);
+  }
+  [data-theme="dark-choco"] {
+    color-scheme: dark; --hue: 55; --tint: 0.035;
+    --accent-dark: oklch(76% 0.12 60);
+  }
+  /* "auto" in the theme menu = follow the system with neutral surfaces */
+  [data-theme="auto"] { color-scheme: light dark; --tint: 0.004; }
+
+  @media (forced-colors: active) {
+    :root, [data-theme] {
+      --surface-page: Canvas; --surface-card: Canvas; --surface-raised: Canvas; --surface-field: Field;
+      --border: CanvasText; --hairline: GrayText; --text-1: CanvasText; --text-2: CanvasText;
+      --accent: Highlight; --shadow-card: none;
+    }
+  }
+}
+
+/* ───────────────────────── base (tier 3: page) ───────────────────────── */
+@layer base {
+  html, body {
+    background: var(--surface-page);
+    color: var(--text-1);
+    accent-color: var(--accent);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  body {
+    font-family: var(--body-font, var(--font-system-ui));
+    font-size: var(--step-0);
+    line-height: var(--line-height-body);
+    padding: var(--space-m);
+    max-inline-size: var(--measure-page);
+    margin-inline: auto;
+  }
+  :focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+  ::placeholder { color: var(--text-2); opacity: 1; }
+  ::selection { background: color-mix(in oklab, var(--accent) 30%, transparent); }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0s !important; transition-duration: 0s !important; }
+  }
+}
+
+/* ───────────────────────── components ───────────────────────── */
+@layer components {
+  /* stacks used by the markup */
+  .hstack { display: flex; flex-wrap: wrap; gap: var(--space-2xs); }
+  .vstack { display: flex; flex-direction: column; gap: var(--space-s); }
+  .visually-hidden:not(:focus, :active) { clip-path: inset(50%); block-size: 1px; inline-size: 1px; overflow: hidden; position: absolute; white-space: nowrap; }
+  .card-counter, .end-of-listing, #list-comment-label, .email-break { display: none; }
+
+  /* header */
+  header {
+    background: var(--surface-raised);
+    border-radius: var(--radius-m);
+    padding: var(--space-m);
+    gap: var(--space-xs);
+  }
+  #list-title {
+    font-family: var(--list-title-font, inherit);
+    font-size: var(--step-2);
+    font-weight: var(--weight-bold);
+    line-height: var(--line-height-tight);
+    text-wrap: balance;
+    text-align: start;
+  }
+  .header-top { justify-content: space-between; align-items: center; }
+  #show-menu { margin-inline-start: auto; gap: var(--space-s); font-size: var(--step--1); }
+  #show-menu > div { display: flex; align-items: center; gap: var(--space-2xs); }
+
+  /* menu: groups flow into as many columns as fit, one column on a phone */
+  .menu { display: none; font-family: var(--menu-font, var(--font-system-ui)); }
+  header:has(#cb-show-menu:checked) #menu, #menu.show { display: block; }
+  .menu-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--measure-menu)), 1fr));
+    gap: var(--space-s);
+    padding-block-start: var(--space-s);
+    border-block-start: var(--border-thin) solid var(--hairline);
+  }
+  .menu-group {
+    display: flex; flex-direction: column; gap: var(--space-xs);
+    padding: var(--space-s);
+    background: var(--surface-card);
+    border: var(--border-thin) solid var(--hairline);
+    border-radius: var(--radius-m);
+  }
+  .menu-group > legend {
+    float: inline-start; inline-size: 100%;     /* keeps the legend inside the group's padding */
+    font-size: var(--step-0); font-weight: var(--weight-bold);
+  }
+  .field { display: flex; flex-direction: column; gap: var(--space-3xs); }
+  .field > label { font-size: var(--step--1); color: var(--text-2); }
+  .field select { inline-size: 100%; }
+  .hint { display: block; font-size: var(--step--1); color: var(--text-2); }
+  .check { display: flex; align-items: start; gap: var(--space-2xs); min-block-size: var(--target-min); cursor: pointer; }
+  .check input { margin-block-start: var(--check-nudge); flex: none; inline-size: var(--check-size); block-size: var(--check-size); accent-color: var(--accent); }
+  .button-row { display: flex; flex-wrap: wrap; gap: var(--space-2xs); }
+  .destructive { color: var(--danger); border-color: var(--danger); }
+
+  /* Layout: a segmented control made of the two native radios */
+  .segmented {
+    display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+    padding: var(--space-3xs); gap: var(--space-3xs);
+    background: var(--surface-raised);
+    border-radius: var(--radius-s);
+  }
+  .segmented label {
+    display: grid; place-items: center;
+    min-block-size: var(--target-min);
+    border-radius: calc(var(--radius-s) - var(--space-3xs));
+    cursor: pointer;
+  }
+  .segmented input { position: absolute; opacity: 0; pointer-events: none; }
+  .segmented label:has(:checked) { background: var(--surface-card); box-shadow: var(--shadow-card); font-weight: var(--weight-medium); }
+  .segmented label:has(:focus-visible) { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+  .menu-group:has(#wide-layout:checked) .narrow-only { display: none; }
+  .narrow-only { display: flex; flex-direction: column; gap: var(--space-xs); }
+  .range-row { display: flex; align-items: center; gap: var(--space-2xs); }
+  .range-row input { flex: 1; accent-color: var(--accent); min-block-size: var(--target-min); }
+  .range-row output { min-inline-size: 2ch; text-align: end; font-variant-numeric: tabular-nums; }
+
+
+  :where(select, input[type="search"], input[type="text"]) {
+    background: var(--surface-field);
+    border: var(--border-thin) solid var(--border);
+    border-radius: var(--radius-s);
+    padding: var(--space-3xs) var(--space-2xs);
+    min-block-size: var(--target-min);
+  }
+  :where(button) {
+    background: var(--surface-card);
+    border: var(--border-thin) solid var(--border);
+    border-radius: var(--radius-s);
+    padding: var(--space-3xs) var(--space-xs);
+    min-block-size: var(--target-min);
+    cursor: pointer;
+  }
+
+  /* switch: a native checkbox, restyled; still a checkbox to assistive tech */
+  input[type="checkbox"].switch {
+    appearance: none;
+    inline-size: var(--switch-width); block-size: var(--switch-height);
+    border-radius: var(--radius-pill);
+    background: var(--border);
+    position: relative;
+    cursor: pointer;
+    transition: background-color var(--duration-quick) var(--ease-out);
+  }
+  input[type="checkbox"].switch::before {
+    content: "";
+    position: absolute; inset-block: var(--switch-inset); inset-inline-start: var(--switch-inset);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--surface-field);
+    transition: translate var(--duration-quick) var(--ease-out);
+  }
+  input[type="checkbox"].switch:checked { background: var(--accent); }
+  input[type="checkbox"].switch:checked::before { translate: var(--switch-travel) 0; }
+  :dir(rtl) input[type="checkbox"].switch:checked::before { translate: calc(-1 * var(--switch-travel)) 0; }
+
+  /* filter + show bar */
+  .actions-container {
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-s);
+    margin-block: var(--space-s);
+    padding: var(--space-xs) var(--space-s);
+    background: var(--surface-raised);
+    border-radius: var(--radius-m);
+    font-size: var(--step--1);
+  }
+  filter-input { flex: 1 1 var(--measure-filter); display: flex; }
+  filter-input input { inline-size: 100%; }
+  #show-fields { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs); }
+  #show-fields .sub-menu-items { display: flex; flex-wrap: wrap; gap: var(--space-3xs) var(--space-s); }
+  #show-fields .sub-menu-items > div { display: flex; align-items: center; gap: var(--space-3xs); }
+
+  /* cards */
+  #h-cards { display: flex; flex-direction: column; gap: var(--space-s); container-type: inline-size; }
+  .h-card {
+    position: relative;
+    display: flex; flex-wrap: wrap; align-items: start; gap: var(--space-xs);
+    padding: var(--space-s);
+    background: var(--surface-card);
+    border: var(--border-thin) solid var(--hairline);
+    border-radius: var(--radius-m);
+    box-shadow: var(--shadow-card);
+    container-type: inline-size;
+  }
+  .name-and-org {
+    flex: 1 1 var(--measure-card);
+    display: flex; flex-direction: column; gap: var(--space-2xs);
+    padding: var(--space-xs);
+    background: var(--surface-raised);
+    border-radius: var(--radius-s);
+  }
+  .p-name { font-size: var(--step-1); font-weight: var(--weight-bold); line-height: var(--line-height-tight); text-wrap: balance; }
+  .name-and-org .p-org, .name-and-org .p-name + p { color: var(--text-2); }
+  .h-card dl {
+    flex: 1 1 var(--measure-card);
+    display: none;               /* shown by the per-list field options */
+    flex-direction: column; gap: var(--space-xs);
+    padding: var(--space-xs);
+    border-inline-start: var(--border-thick) solid var(--hairline);
+  }
+  .h-card dl.p-note { border: 0; padding-inline: 0; }
+  .h-card .name-and-org dl { flex: none; }
+  .h-card dt { color: var(--text-2); font-size: var(--step--1); line-height: var(--line-height-tight); }
+  .h-card dd { margin: 0; font-size: var(--field-font-size, var(--step-0)); overflow-wrap: anywhere; }
+  .h-card a { text-decoration: none; }
+  .h-card a:hover, .h-card a:focus-visible { color: var(--accent); text-decoration: underline; text-underline-offset: var(--underline-offset); }
+  .h-card label { display: none; }
+  .h-card .details { accent-color: var(--accent); }
+
+  /* narrow cards stack their field groups (container query, not viewport) */
+  /* Container query conditions cannot read custom properties; 36rem = 2 × --measure-card. */
+  @container (inline-size < 36rem) {
+    .h-card dl { border-inline-start: 0; border-block-start: var(--border-thin) solid var(--hairline); padding-inline: 0; }
+  }
+
+  /* editable text (title, comments) */
+  .editable {
+    border-radius: var(--radius-s);
+    padding: var(--space-3xs) var(--space-2xs);
+    line-height: var(--line-height-body);
+  }
+  .editable[contenteditable]:not([contenteditable="false"]) {
+    background: var(--surface-field);
+    box-shadow: inset 0 0 0 var(--border-thin) var(--border);
+    caret-color: var(--accent);
+  }
+  #list-title.editable[contenteditable] { background: transparent; box-shadow: none; }
+  .editable:not(#list-title) { font-family: var(--editable-font, inherit); font-size: var(--step--1); }
+  #list-comment:empty::before, .p-note:empty::before {
+    content: attr(data-placeholder);
+    color: var(--text-2);
+    pointer-events: none;
+  }
+  /* Filter bar stays in reach while scrolling a long list */
+  .actions-container {
+    position: sticky; inset-block-start: var(--sticky-gap); z-index: 1;
+    background: color-mix(in oklab, var(--surface-raised) var(--glass-mix), transparent);
+    backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--shadow-card);
+  }
+  .actions-container > :not(filter-input) { flex: 1 1 var(--measure-card); }
+  .actions-container input[type="search"] { font-size: var(--step--1); }
+
+  /* Long lists: cards below the first screen render on demand */
+  #h-cards > .h-card:nth-child(n + 7) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto none auto var(--deferred-card-height);
+  }
+
+  /* Values: never split a phone number; break long emails only where they would overflow */
+  .h-card .h-tel a { white-space: nowrap; }
+  .h-card dd { overflow-wrap: break-word; }
+
+  /* Footer: when the list was made, then quiet links, then a one-line credit */
+  .list-footer {
+    display: flex; flex-direction: column; align-items: center; gap: var(--space-s);
+    margin-block-start: var(--space-l);
+    padding-block: var(--space-m);
+    border-block-start: var(--border-thin) solid var(--hairline);
+    font-size: var(--step--1); color: var(--text-2);
+    text-align: center;
+  }
+  .list-footer-meta, .list-footer-links a { display: inline-flex; align-items: center; gap: var(--space-2xs); }
+  .list-footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2xs); }
+  .list-footer-links a {
+    min-block-size: var(--target-min);
+    padding-inline: var(--space-xs);
+    border: var(--border-thin) solid var(--hairline);
+    border-radius: var(--radius-pill);
+    color: var(--text-1);
+    text-decoration: none;
+    transition: background-color var(--duration-quick) var(--ease-out), border-color var(--duration-quick) var(--ease-out);
+  }
+  .list-footer-links a:hover { background: var(--surface-raised); border-color: var(--border); }
+  .list-footer-links .icon { color: var(--accent); }
+  .list-footer-links .icon--small { color: var(--text-2); }
+  .list-footer-credit a { color: var(--accent); text-underline-offset: var(--underline-offset); }
+  .icon { inline-size: var(--icon-size); block-size: var(--icon-size); flex: none; }
+  .icon--small { inline-size: var(--icon-size-small); block-size: var(--icon-size-small); }
+
+  /* Back to top: a round accent button that fades in as the list scrolls */
+  .scrolltop-wrap {
+    position: fixed; inset-block-end: var(--space-m); inset-inline-end: var(--space-m); z-index: 2;
+  }
+  .scrolltop-wrap a {
+    display: grid; place-items: center;
+    inline-size: var(--scrolltop-size); block-size: var(--scrolltop-size);
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: var(--shadow-card);
+  }
+  .scrolltop-wrap svg { inline-size: 60%; block-size: 60%; }
+  .scrolltop-wrap #scrolltop-bg { fill: transparent; }
+  .scrolltop-wrap #scrolltop-arrow { fill: var(--surface-card); }
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .scrolltop-wrap {
+        animation: scrolltop-reveal linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 var(--scrolltop-reveal);
+      }
+    }
+  }
+  @keyframes scrolltop-reveal { from { opacity: 0; visibility: hidden; } to { opacity: 1; visibility: visible; } }
+
+  /* Readers who ask for more contrast */
+  @media (prefers-contrast: more) {
+    :root, [data-theme] {
+      --l-text-2-light: 32%; --l-text-2-dark: 88%;
+      --l-hairline-light: 70%; --l-hairline-dark: 48%;
+      --l-border-light: 45%; --l-border-dark: 68%;
+    }
+  }
+}
+
+/* ───────────────────────── refinements (tidy up the per-list option rules) ───────────────────────── */
+@layer refinements {
+  /* The per-card "details" switch sits neatly inside the card's top-end corner */
+  .h-card .details:checked {
+    position: absolute;
+    inset-block-start: var(--space-2xs); inset-inline-end: var(--space-2xs); inset-inline-start: auto;
+    transform: none;
+    font-size: var(--step--2);
+  }
+  /* Narrow cards: a fixed track width, so every card lines up */
+  #h-cards.narrow-layout .h-card,
+  body:has([value=narrow-layout]:checked) .h-card {
+    flex: 0 1 calc(var(--h-card-narrow-width) * var(--base-unit-for-width));
+    max-inline-size: none;
+    align-items: stretch;           /* a column of cards' parts: each part spans the card */
+  }
+}
+
+/* ───────────────────────── print ───────────────────────── */
+@layer print {
+  @media print {
+    @page { margin: var(--print-page-margin); }
+    :root, [data-theme] { color-scheme: light; }
+    html, body { background: none; color: black; }
+    body { padding: 0; font-size: var(--print-body); max-inline-size: none; }
+    .menu, .actions-container, #show-menu, .scrolltop-wrap, button, .details.switch { display: none !important; }
+    header { background: none; padding: 0 0 var(--print-gap); }
+    #list-title { font-size: var(--print-title); }
+    #list-comment:empty, .p-note:empty, dl.p-note:has(.p-note:empty) { display: none !important; }
+    #list-comment:empty::before, .p-note:empty::before { content: none; }
+    .editable[contenteditable] { background: none; box-shadow: none; padding: 0; }
+    #h-cards > .h-card { content-visibility: visible; }
+    .list-footer { border: 0; padding-block: var(--print-gap) 0; margin-block-start: var(--print-gap); }
+    .list-footer-links, .list-footer-credit, .list-footer .icon { display: none; }
+    .actions-container { position: static; }
+    .h-card {
+      break-inside: avoid;
+      background: none; box-shadow: none;
+      border: var(--print-hairline) solid var(--print-border);
+      border-radius: var(--print-radius);
+      padding: var(--print-pad);
+    }
+    .name-and-org { background: none; padding: 0; }
+    .h-card dl { border-inline-start-color: var(--print-rule); padding-block: 0; }
+    .h-card dt { color: var(--print-label); }
+    a { color: inherit; text-decoration: none; }
+    body:has(#show-card-counter:checked) .card-counter { display: block; position: absolute; inset-block-end: var(--print-inset); inset-inline-end: var(--print-radius); font-size: var(--print-counter); }
+  }
+}

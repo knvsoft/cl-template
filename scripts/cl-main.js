@@ -96,8 +96,16 @@ async function initApplication() {
   document.body.addEventListener('click', onClick);
   document.body.addEventListener('change', onChange);
   $('input[type=range]')?.addEventListener('input', performAction);
+  $('#h-card-width')?.addEventListener('input', showCardWidthValue);
 
   await loadSettings();
+  showCardWidthValue();
+}
+
+// Keeps the Card width slider's value line (#h-card-width-value) in step with the slider
+function showCardWidthValue() {
+  const range = $id('h-card-width'), output = $id('h-card-width-value');
+  if (range && output) output.value = range.value;
 }
 
 function onClick(event) {

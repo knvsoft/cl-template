@@ -32,6 +32,13 @@
     --space-m: clamp(1rem, 0.9rem + 0.5vw, 1.5rem);
     --space-l: clamp(1.5rem, 1.3rem + 1vw, 2.25rem);
 
+    /* Inline gutters: the space tokens, capped by the viewport so nested containers cannot eat the line when the root
+       font size is large (the reader's text size). The 16 px / 12 px floors keep today's values at the default size on
+       any viewport from 320 px. Block padding stays in rem. */
+    --gutter: min(var(--space-m), max(16px, 5vw));      /* body, header */
+    --gutter-s: min(var(--space-s), max(16px, 4vw));    /* menu groups, cards */
+    --gutter-xs: min(var(--space-xs), max(12px, 3vw));  /* bars, panels, field groups */
+
     --radius-s: 0.375rem;
     --radius-m: 0.75rem;
     --radius-pill: 999rem;
@@ -116,7 +123,7 @@
     --sticky-gap: var(--space-2xs);
     --glass-mix: 82%;               /* how opaque the sticky filter bar stays over cards */
     --glass-blur: 12px;
-    --scrolltop-size: 2.75rem;
+    --scrolltop-size: min(2.75rem, 56px);   /* 44 pt; a fixed button stops growing at 56 px so it cannot cover the page at large text */
     --scrolltop-reveal: 30rem;      /* scrolled distance at which "back to top" has fully appeared */
     --deferred-card-height: 12rem;  /* placeholder height for cards rendered on demand */
 
@@ -198,16 +205,13 @@
     font-family: var(--body-font, var(--font-system-ui));
     font-size: var(--step-0);
     line-height: var(--line-height-body);
-    padding: var(--space-m);
+    padding: var(--space-m) var(--gutter);
     max-inline-size: var(--measure-page);
     margin-inline: auto;
   }
   :focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
   ::placeholder { color: var(--text-2); opacity: 1; }
   ::selection { background: color-mix(in oklab, var(--accent) 30%, transparent); }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: 0s !important; transition-duration: 0s !important; }
-  }
 }
 
 /* ───────────────────────── components ───────────────────────── */
@@ -218,11 +222,28 @@
   .visually-hidden:not(:focus, :active) { clip-path: inset(50%); block-size: 1px; inline-size: 1px; overflow: hidden; position: absolute; white-space: nowrap; }
   .card-counter, .end-of-listing, #list-comment-label, .email-break { display: none; }
 
+  /* Skip link: first in <body>, out of sight until it takes focus, then a button-sized link over the page. */
+  .skip-link {
+    position: fixed; z-index: 4;
+    inset-block-start: var(--space-2xs); inset-inline-start: var(--gutter);
+    display: inline-flex; align-items: center;
+    max-inline-size: calc(100% - 2 * var(--gutter));
+    min-block-size: var(--target-min);
+    padding: var(--space-3xs) var(--space-xs);
+    background: var(--surface-card); color: var(--text-1);
+    border: var(--border-thick) solid var(--accent);
+    border-radius: var(--radius-s);
+    box-shadow: var(--shadow-card);
+    font-weight: var(--weight-bold);
+  }
+  .skip-link:not(:focus, :active) { clip-path: inset(50%); block-size: 1px; inline-size: 1px; min-block-size: 0; padding: 0; border: 0; overflow: hidden; white-space: nowrap; }
+  #h-cards:focus-visible { outline: none; }      /* the skip link's landing place is a region, not a control */
+
   /* header */
   header {
     background: var(--surface-raised);
     border-radius: var(--radius-m);
-    padding: var(--space-m);
+    padding: var(--space-m) var(--gutter);
     gap: var(--space-xs);
   }
   #list-title {
@@ -232,6 +253,7 @@
     line-height: var(--line-height-tight);
     text-wrap: balance;
     text-align: start;
+    overflow-wrap: break-word;      /* last resort: words break between words first */
   }
   .header-top { justify-content: space-between; align-items: center; }
   #show-menu { margin-inline-start: auto; gap: var(--space-s); font-size: var(--step--1); }
@@ -249,7 +271,7 @@
   }
   .menu-group {
     display: flex; flex-direction: column; gap: var(--space-xs);
-    padding: var(--space-s);
+    padding: var(--space-s) var(--gutter-s);
     background: var(--surface-card);
     border: var(--border-thin) solid var(--hairline);
     border-radius: var(--radius-m);
@@ -261,21 +283,25 @@
   .field { display: flex; flex-direction: column; gap: var(--space-3xs); }
   .field > label { font-size: var(--step--1); color: var(--text-2); }
   .field select { inline-size: 100%; }
-  .hint { display: block; font-size: var(--step--1); color: var(--text-2); }
+  .hint { display: block; font-size: var(--step--1); color: var(--text-2); overflow-wrap: break-word; }
   .check { display: flex; align-items: start; gap: var(--space-2xs); min-block-size: var(--target-min); cursor: pointer; }
+  .check > span { min-inline-size: 0; overflow-wrap: break-word; }
   .check input { margin-block-start: var(--check-nudge); flex: none; inline-size: var(--check-size); block-size: var(--check-size); accent-color: var(--accent); }
   .button-row { display: flex; flex-wrap: wrap; gap: var(--space-2xs); }
+  .button-row > button { max-inline-size: 100%; }
   .destructive { color: var(--danger); border-color: var(--danger); }
 
   /* Layout: a segmented control made of the two native radios */
+  /* Equal columns while the labels fit side by side; each label stacks to its own full-width row when they do not. */
   .segmented {
-    display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+    display: flex; flex-wrap: wrap;
     padding: var(--space-3xs); gap: var(--space-3xs);
     background: var(--surface-raised);
     border-radius: var(--radius-s);
   }
   .segmented label {
-    display: grid; place-items: center;
+    display: grid; place-items: center; text-align: center;
+    flex: 1 1 0; min-inline-size: max-content; max-inline-size: 100%;
     min-block-size: var(--target-min);
     border-radius: calc(var(--radius-s) - var(--space-3xs));
     cursor: pointer;
@@ -332,7 +358,7 @@
   .actions-container {
     display: flex; flex-wrap: wrap; align-items: start; gap: var(--space-xs);
     margin-block: var(--space-s);
-    padding: var(--space-xs);
+    padding: var(--space-xs) var(--gutter-xs);
     background: var(--surface-raised);
     border-radius: var(--radius-m);
     font-size: var(--step--1);
@@ -356,7 +382,7 @@
   .actions-container > filter-input,
   .actions-container > :has(> #show-fields) { flex: 1 1 100%; }
   .actions-container > :has(> #show-fields) { min-inline-size: 0; }
-  .actions-container[data-pill-layout="inline"] > filter-input { flex: 1 1 var(--measure-filter); min-inline-size: var(--measure-filter); }
+  .actions-container[data-pill-layout="inline"] > filter-input { flex: 1 1 var(--measure-filter); min-inline-size: min(100%, var(--measure-filter)); }
   .actions-container[data-pill-layout="inline"] > :has(> #show-fields) { flex: 0 0 auto; }
 
   #show-fields { display: flex; align-items: center; gap: var(--space-2xs); min-block-size: var(--target-min); }
@@ -369,7 +395,7 @@
 
   .actions-container:not([data-pill-layout="inline"], [data-pill-layout="below"]) #show-fields {
     display: block;
-    padding: var(--space-xs);                  /* the same inset on all four sides */
+    padding: var(--space-xs) var(--gutter-xs); /* the same inset on all four sides */
     background: var(--group-shade);            /* grouped by shade, not by an outline */
     border-radius: var(--radius-s);
   }
@@ -384,7 +410,8 @@
     --pill-edge: color-mix(in oklab, var(--text-2) 72%, var(--surface-raised));
     position: relative; flex: none;
     display: inline-flex; align-items: center; gap: 0.333em;   /* LabelPill HStack spacing 5 */
-    block-size: var(--pill-h);
+    min-block-size: var(--pill-h);
+    max-inline-size: 100%;
     margin-block: calc((var(--target-min) - var(--pill-h)) / 2);   /* hit area = target height, pill looks smaller */
     padding-inline: 0.867em;                   /* LabelPill .padding(.horizontal, 13) */
     border: var(--border-thin) solid var(--pill-edge);
@@ -392,7 +419,8 @@
     background: var(--surface-card);
     color: var(--text-2);
     font-weight: var(--weight-regular);
-    white-space: nowrap; cursor: pointer;
+    cursor: pointer;                           /* a long label wraps inside its pill instead of leaving the screen */
+    overflow-wrap: break-word;
     transition: background-color var(--duration-quick) var(--ease-out), border-color var(--duration-quick) var(--ease-out);
   }
   .actions-container:not([data-pill-layout="inline"], [data-pill-layout="below"]) #show-fields .sub-menu-items > div { margin-block: 0; }
@@ -416,11 +444,6 @@
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2.5 8.5l3.5 3.5 7.5-8' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
   }
   #show-fields .sub-menu-items > div:has(:focus-visible) { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
-  @media (forced-colors: active) {
-    #show-fields .sub-menu-items > div { border-color: CanvasText; }
-    #show-fields .sub-menu-items > div:has(:checked) { background: Highlight; color: HighlightText; border-color: Highlight; }
-  }
-  @media (prefers-reduced-motion: reduce) { #show-fields .sub-menu-items > div { transition: none; } }
 
   /* No Show item for a field no card has */
   body:not(:has(dl.p-note))   #comment,
@@ -436,7 +459,7 @@
   .h-card {
     position: relative;
     display: flex; flex-wrap: wrap; align-items: start; gap: var(--space-xs);
-    padding: var(--space-s);
+    padding: var(--space-s) var(--gutter-s);
     background: var(--surface-card);
     border: var(--border-thin) solid var(--hairline);
     border-radius: var(--radius-m);
@@ -444,19 +467,19 @@
     container-type: inline-size;
   }
   .name-and-org {
-    flex: 1 1 var(--measure-card);
+    flex: 1 1 var(--measure-card); max-inline-size: 100%;   /* a long word can't push the part past the card */
     display: flex; flex-direction: column; gap: var(--space-2xs);
-    padding: var(--space-xs);
+    padding: var(--space-xs) var(--gutter-xs);
     background: var(--surface-raised);
     border-radius: var(--radius-s);
   }
   .p-name { font-size: var(--step-1); font-weight: var(--weight-bold); line-height: var(--line-height-tight); text-wrap: balance; }
   .name-and-org .p-org, .name-and-org .p-name + p { color: var(--text-2); }
   .h-card dl {
-    flex: 1 1 var(--measure-card);
+    flex: 1 1 var(--measure-card); max-inline-size: 100%;   /* a long word can't push the part past the card */
     display: none;               /* shown by the per-list field options */
     flex-direction: column; gap: var(--space-xs);
-    padding: var(--space-xs);
+    padding: var(--space-xs) var(--gutter-xs);
     border-inline-start: var(--border-thick) solid var(--hairline);
   }
   .h-card dl.p-note { border: 0; padding-inline: 0; }
@@ -477,7 +500,7 @@
   /* editable text (title, comments) */
   .editable {
     border-radius: var(--radius-s);
-    padding: var(--space-3xs) var(--space-2xs);
+    padding: var(--space-3xs) min(var(--space-2xs), max(8px, 2vw));
     line-height: var(--line-height-body);
   }
   .editable[contenteditable]:not([contenteditable="false"]) {
@@ -513,10 +536,8 @@
   }
   .actions-container[data-stuck]:not([data-pill-layout="inline"]) > filter-input { pointer-events: auto; }
   .actions-container[data-stuck]:not([data-pill-layout="inline"]) > :has(> #show-fields) { visibility: hidden; }
-  @media (prefers-reduced-motion: no-preference) {
-    .actions-container { transition: clip-path var(--duration-quick) var(--ease-out); }
-    .actions-container > :has(> #show-fields) { transition: visibility var(--duration-quick) var(--ease-out); }
-  }
+  .actions-container { transition: clip-path var(--duration-quick) var(--ease-out); }
+  .actions-container > :has(> #show-fields) { transition: visibility var(--duration-quick) var(--ease-out); }
   .actions-container input[type="search"] { font-size: var(--step--1); }
   /* Safari on iPhone zooms the page when a field under 16 px gets focus */
   @media (pointer: coarse) {
@@ -529,8 +550,9 @@
     contain-intrinsic-size: auto none auto var(--deferred-card-height);
   }
 
-  /* Values: never split a phone number; break long emails only where they would overflow */
-  .h-card .h-tel a { white-space: nowrap; }
+  /* Values: a phone number stays on one line while it fits. When it does not (large text), it wraps between its groups:
+     the line-breaking rules never split a digit run or break after a hyphen before a digit ("203-1700" stays whole). Long
+     emails break only where they would overflow. */
   .h-card dd { overflow-wrap: break-word; }
 
   /* Footer: when the list was made, then quiet links, then a one-line credit */
@@ -546,7 +568,8 @@
   .list-footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2xs); }
   .list-footer-links a {
     min-block-size: var(--target-min);
-    padding-inline: var(--space-xs);
+    max-inline-size: 100%;
+    padding-inline: var(--gutter-xs);
     border: var(--border-thin) solid var(--hairline);
     border-radius: var(--radius-pill);
     color: var(--text-1);
@@ -554,6 +577,7 @@
     transition: background-color var(--duration-quick) var(--ease-out), border-color var(--duration-quick) var(--ease-out);
   }
   .list-footer-links a:hover { background: var(--surface-raised); border-color: var(--border); }
+  .list-footer-links a > span { min-inline-size: 0; overflow-wrap: anywhere; }
   .list-footer-links .icon { color: var(--accent); }
   .list-footer-links .icon--small { color: var(--text-2); }
   .list-footer-credit a { color: var(--accent); text-underline-offset: var(--underline-offset); }
@@ -562,7 +586,7 @@
 
   /* Back to top: a round accent button that fades in as the list scrolls */
   .scrolltop-wrap {
-    position: fixed; inset-block-end: var(--space-m); inset-inline-end: var(--space-m); z-index: 2;
+    position: fixed; inset-block-end: var(--space-m); inset-inline-end: var(--gutter); z-index: 2;
   }
   .scrolltop-wrap a {
     display: grid; place-items: center;
@@ -574,30 +598,15 @@
   .scrolltop-wrap svg { inline-size: 60%; block-size: 60%; }
   .scrolltop-wrap #scrolltop-bg { fill: transparent; }
   .scrolltop-wrap #scrolltop-arrow { fill: var(--surface-card); }
+  /* Opacity only, driven by the scroll position, so it stays when the reader asks for reduced motion. */
   @supports (animation-timeline: scroll()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .scrolltop-wrap {
-        animation: scrolltop-reveal linear both;
-        animation-timeline: scroll(root);
-        animation-range: 0 var(--scrolltop-reveal);
-      }
+    .scrolltop-wrap {
+      animation: scrolltop-reveal linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 var(--scrolltop-reveal);
     }
   }
   @keyframes scrolltop-reveal { from { opacity: 0; visibility: hidden; } to { opacity: 1; visibility: visible; } }
-
-  /* Readers who ask for more contrast */
-  @media (prefers-contrast: more) {
-    :root, [data-theme] {
-      --l-text-2-light: 32%; --l-text-2-dark: 88%;
-      --l-hairline-light: 70%; --l-hairline-dark: 48%;
-      --l-border-light: 45%; --l-border-dark: 68%;
-    }
-    /* a chosen pill is a solid accent with scheme-correct text, not a tint */
-    #show-fields .sub-menu-items > div:has(:checked),
-    #show-fields .sub-menu-items > div:has(:checked):hover {
-      background: var(--accent); border-color: var(--accent); color: var(--on-accent);
-    }
-  }
 }
 
 /* ───────────────────────── refinements (tidy up the per-list option rules) ───────────────────────── */
@@ -609,6 +618,57 @@
     max-inline-size: none;
     align-items: stretch;           /* a column of cards' parts: each part spans the card */
   }
+
+  /* ── The reader's settings: one block each, after every rule they adjust. Defaults are untouched. ── */
+
+  /* Reduced motion: no transition runs and nothing scrolls smoothly. The one animation, the back-to-top button's
+     scroll-linked fade (above), is opacity only and stays. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+  }
+
+  /* More contrast: text, outlines and field borders stop relying on tint; the sticky bar is solid. */
+  @media (prefers-contrast: more) {
+    :root, [data-theme] {
+      --l-text-2-light: 32%; --l-text-2-dark: 88%;           /* secondary and hint text */
+      --l-hairline-light: 70%; --l-hairline-dark: 48%;
+      --l-border-light: 45%; --l-border-dark: 68%;
+      --focus-ring: calc(var(--border-thick) + 1px) solid var(--text-1);
+      --glass-mix: 100%;
+    }
+    .actions-container { backdrop-filter: none; }
+    .h-card, .menu-group, .list-footer-links a { border-color: var(--border); }
+    .h-card dl { border-color: var(--border); }
+    select, input[type="search"], input[type="text"], button:not(.destructive) { border-color: var(--text-2); }
+    #show-fields .sub-menu-items > div { --pill-edge: var(--text-2); }
+    /* a chosen pill is a solid accent with scheme-correct text, not a tint */
+    #show-fields .sub-menu-items > div:has(:checked),
+    #show-fields .sub-menu-items > div:has(:checked):hover {
+      background: var(--accent); border-color: var(--accent); color: var(--on-accent);
+    }
+    input[type="checkbox"].switch { background: var(--text-2); }
+    input[type="checkbox"].switch:checked { background: var(--accent); }
+    .segmented { box-shadow: inset 0 0 0 var(--border-thin) var(--text-2); }
+    .segmented label:has(:checked) { box-shadow: inset 0 0 0 var(--border-thick) var(--text-1); font-weight: var(--weight-bold); }
+    .h-card a { text-decoration: underline; text-underline-offset: var(--underline-offset); }
+  }
+
+  /* Forced colours: system colours only. Controls keep a border, the chosen pill and segment are Highlight (not tint),
+     focus is Highlight, and what a shadow or a shade grouped now has an outline. No forced-color-adjust: the page has
+     no colour swatches. The system-colour tokens are set in the themes layer. */
+  @media (forced-colors: active) {
+    :root, [data-theme] { --focus-ring: var(--border-thick) solid Highlight; }
+    header, .actions-container, .segmented { border: var(--border-thin) solid CanvasText; }
+    .h-card, .menu-group, .list-footer-links a { border-color: CanvasText; }
+    .actions-container:not([data-pill-layout="inline"], [data-pill-layout="below"]) #show-fields { border: var(--border-thin) solid CanvasText; }
+    button { background: ButtonFace; color: ButtonText; border-color: ButtonText; }
+    .editable[contenteditable]:not([contenteditable="false"]):not(#list-title) { border: var(--border-thin) solid CanvasText; }
+    input[type="checkbox"].switch { border: var(--border-thin) solid CanvasText; }
+    .segmented label:has(:checked) { background: Highlight; color: HighlightText; box-shadow: none; }
+    #show-fields .sub-menu-items > div { border-color: CanvasText; }
+    #show-fields .sub-menu-items > div:has(:checked) { background: Highlight; color: HighlightText; border-color: Highlight; }
+    .scrolltop-wrap a { border: var(--border-thin) solid ButtonText; }
+  }
 }
 
 /* ───────────────────────── print ───────────────────────── */
@@ -618,7 +678,7 @@
     :root, [data-theme] { color-scheme: light; }
     html, body { background: none; color: black; }
     body { padding: 0; font-size: var(--print-body); max-inline-size: none; }
-    .menu, .actions-container, #show-menu, .scrolltop-wrap, button, .details.switch { display: none !important; }
+    .menu, .actions-container, #show-menu, .scrolltop-wrap, .skip-link, button, .details.switch { display: none !important; }
     header { background: none; padding: 0 0 var(--print-gap); }
     #list-title { font-size: var(--print-title); }
     #list-comment:empty, .p-note:empty, dl.p-note:has(.p-note:empty) { display: none !important; }

@@ -60,6 +60,7 @@
     --check-size: 1.15em;
     --check-nudge: 0.2em;           /* aligns a checkbox with the first text line */
     --target-min-touch: 2.75rem;    /* 44 pt where the pointer is a finger */
+    --pill-height: 2.267em;         /* a pill toggle: the app's LabelPill, 34 pt on 15 pt */
 
     /* Switch geometry, relative to its own font size */
     --switch-width: 2.25em;
@@ -149,6 +150,8 @@
     --text-1: light-dark(oklch(var(--l-text-1-light) calc(var(--tint) * 1.5) var(--hue)), oklch(var(--l-text-1-dark) calc(var(--tint) / 2) var(--hue)));
     --text-2: light-dark(oklch(var(--l-text-2-light) calc(var(--tint) * 1.5) var(--hue)), oklch(var(--l-text-2-dark) var(--tint) var(--hue)));
     --accent: light-dark(var(--accent-light), var(--accent-dark));
+    /* Text on a solid accent: white on the light accents (6.1:1 clBlue, 7.1:1 grape), near-black in the theme's hue on the dark ones (10.1:1 clBlue, 8.9:1 choco) */
+    --on-accent: light-dark(white, oklch(15% var(--tint) var(--hue)));
     --shadow-color: light-dark(oklch(30% var(--tint) var(--hue) / 0.12), oklch(0% 0 0 / 0.5));
     --shadow-card: 0 1px 2px var(--shadow-color), 0 2px 8px var(--shadow-color);
     --focus-ring: var(--border-thick) solid var(--accent);
@@ -177,7 +180,7 @@
     :root, [data-theme] {
       --surface-page: Canvas; --surface-card: Canvas; --surface-raised: Canvas; --surface-field: Field;
       --border: CanvasText; --hairline: GrayText; --text-1: CanvasText; --text-2: CanvasText;
-      --accent: Highlight; --shadow-card: none;
+      --accent: Highlight; --on-accent: HighlightText; --shadow-card: none;
     }
   }
 }
@@ -325,20 +328,108 @@
   input[type="checkbox"].switch:checked::before { translate: var(--switch-travel) 0; }
   :dir(rtl) input[type="checkbox"].switch:checked::before { translate: calc(-1 * var(--switch-travel)) 0; }
 
-  /* filter + show bar */
+  /* filter + show bar: one 12 inset on every side */
   .actions-container {
-    display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-s);
+    display: flex; flex-wrap: wrap; align-items: start; gap: var(--space-xs);
     margin-block: var(--space-s);
-    padding: var(--space-xs) var(--space-s);
+    padding: var(--space-xs);
     background: var(--surface-raised);
     border-radius: var(--radius-m);
     font-size: var(--step--1);
+    /* one shade deeper than the surface it sits on: toward the text colour, so it reads in light and dark */
+    --group-shade: color-mix(in oklab, var(--surface-raised), var(--text-1) 6%);
   }
-  filter-input { flex: 1 1 var(--measure-filter); display: flex; }
+  filter-input { display: flex; }
   filter-input input { inline-size: 100%; }
-  #show-fields { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs); }
-  #show-fields .sub-menu-items { display: flex; flex-wrap: wrap; gap: var(--space-3xs) var(--space-s); }
-  #show-fields .sub-menu-items > div { display: flex; align-items: center; gap: var(--space-3xs); }
+
+  /* Pill group: a label ("Show:") and its pills, in one of three layouts that layoutPillGroup() (the page script)
+     picks from the group's natural one-line width, as data-pill-layout on the bar:
+     inline : [filter ........][Show: (pill)(pill)(pill)…]      everything on one line
+     below  : [filter ...........................................]
+              [Show: (pill)(pill)(pill)(pill)(pill)(pill)(pill)]  the group on its own line, no box
+     boxed  : [filter ...........................................]
+              ┌ Show: ────────────────────────────────────┐
+              │ (pill)(pill)(pill)(pill)                   │      a shaded group: label upper-left, pills wrap
+              │ (pill)(pill)(pill)                         │
+              └────────────────────────────────────────────┘
+     With no script (the attribute is absent, or anything else) the bar is boxed, which fits any width. */
+  .actions-container > filter-input,
+  .actions-container > :has(> #show-fields) { flex: 1 1 100%; }
+  .actions-container > :has(> #show-fields) { min-inline-size: 0; }
+  .actions-container[data-pill-layout="inline"] > filter-input { flex: 1 1 var(--measure-filter); min-inline-size: var(--measure-filter); }
+  .actions-container[data-pill-layout="inline"] > :has(> #show-fields) { flex: 0 0 auto; }
+
+  #show-fields { display: flex; align-items: center; gap: var(--space-2xs); min-block-size: var(--target-min); }
+  #show-fields > div:first-child {             /* the group label, "Show:" */
+    color: var(--text-2); white-space: nowrap; flex: none;
+    text-box: trim-both cap alphabetic;        /* same centre line as the pill text */
+    padding-inline-end: var(--space-3xs);
+  }
+  #show-fields .sub-menu-items { display: flex; flex-wrap: nowrap; gap: var(--space-2xs); }
+
+  .actions-container:not([data-pill-layout="inline"], [data-pill-layout="below"]) #show-fields {
+    display: block;
+    padding: var(--space-xs);                  /* the same inset on all four sides */
+    background: var(--group-shade);            /* grouped by shade, not by an outline */
+    border-radius: var(--radius-s);
+  }
+  .actions-container:not([data-pill-layout="inline"], [data-pill-layout="below"]) #show-fields > div:first-child {
+    padding: 0; margin-block-end: var(--space-2xs);   /* label above its pills, upper-left; same weight as inline, so the measured width never depends on the layout */
+  }
+  .actions-container:not([data-pill-layout="inline"], [data-pill-layout="below"]) #show-fields .sub-menu-items { flex-wrap: wrap; }
+
+  /* Pill toggle = the app's LabelPill: quiet off, tinted on, a tick in the form. The checkbox stays native: it covers the pill and its hit area. */
+  #show-fields .sub-menu-items > div {
+    --pill-h: var(--pill-height);
+    --pill-edge: color-mix(in oklab, var(--text-2) 72%, var(--surface-raised));
+    position: relative; flex: none;
+    display: inline-flex; align-items: center; gap: 0.333em;   /* LabelPill HStack spacing 5 */
+    block-size: var(--pill-h);
+    margin-block: calc((var(--target-min) - var(--pill-h)) / 2);   /* hit area = target height, pill looks smaller */
+    padding-inline: 0.867em;                   /* LabelPill .padding(.horizontal, 13) */
+    border: var(--border-thin) solid var(--pill-edge);
+    border-radius: var(--radius-pill);
+    background: var(--surface-card);
+    color: var(--text-2);
+    font-weight: var(--weight-regular);
+    white-space: nowrap; cursor: pointer;
+    transition: background-color var(--duration-quick) var(--ease-out), border-color var(--duration-quick) var(--ease-out);
+  }
+  .actions-container:not([data-pill-layout="inline"], [data-pill-layout="below"]) #show-fields .sub-menu-items > div { margin-block: 0; }
+  #show-fields .sub-menu-items input[type="checkbox"] {
+    position: absolute; inset: calc((var(--pill-h) - var(--target-min)) / 2) 0;   /* covers the pill and its hit area */
+    margin: 0; inline-size: 100%; block-size: auto; opacity: 0; cursor: pointer;
+  }
+  /* Centre the capitals, not the font's line box: each font's own cap height decides, so it holds in every font.
+     Ignored where unsupported (before Safari 18.2 / Chrome 133), which falls back to normal centring. */
+  #show-fields .sub-menu-items label { cursor: pointer; text-box: trim-both cap alphabetic; }
+  #show-fields .sub-menu-items > div:hover { background: color-mix(in oklab, var(--accent) 6%, var(--surface-card)); }
+  #show-fields .sub-menu-items > div:has(:checked) {
+    background: color-mix(in oklab, var(--accent) 14%, var(--surface-card));
+    border-color: color-mix(in oklab, var(--accent) 88%, var(--surface-card));
+    color: color-mix(in oklab, var(--accent) 82%, var(--text-1));
+  }
+  #show-fields .sub-menu-items > div:has(:checked):hover { background: color-mix(in oklab, var(--accent) 20%, var(--surface-card)); }
+  #show-fields .sub-menu-items > div:has(:checked)::before {
+    content: ""; inline-size: 0.8em; block-size: 0.8em; flex: none; background: currentColor;
+    margin-inline-start: -0.1em;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2.5 8.5l3.5 3.5 7.5-8' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  #show-fields .sub-menu-items > div:has(:focus-visible) { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+  @media (forced-colors: active) {
+    #show-fields .sub-menu-items > div { border-color: CanvasText; }
+    #show-fields .sub-menu-items > div:has(:checked) { background: Highlight; color: HighlightText; border-color: Highlight; }
+  }
+  @media (prefers-reduced-motion: reduce) { #show-fields .sub-menu-items > div { transition: none; } }
+
+  /* No Show item for a field no card has */
+  body:not(:has(dl.p-note))   #comment,
+  body:not(:has(dl.h-tel))    #phoneNumbers,
+  body:not(:has(dl.h-adr))    #postalAddresses,
+  body:not(:has(dl.u-email))  #emailAddresses,
+  body:not(:has(dl.u-url))    #urlAddresses,
+  body:not(:has(dl.u-social)) #socialProfiles,
+  body:not(:has(dl.dt-bday))  #birthday { display: none; }
 
   /* cards */
   #h-cards { display: flex; flex-direction: column; gap: var(--space-s); container-type: inline-size; }
@@ -408,8 +499,11 @@
     backdrop-filter: blur(var(--glass-blur));
     box-shadow: var(--shadow-card);
   }
-  .actions-container > :not(filter-input) { flex: 1 1 var(--measure-card); }
   .actions-container input[type="search"] { font-size: var(--step--1); }
+  /* Safari on iPhone zooms the page when a field under 16 px gets focus */
+  @media (pointer: coarse) {
+    .editable:not(#list-title), .actions-container input[type="search"] { font-size: max(16px, var(--step--1)); }
+  }
 
   /* Long lists: cards below the first screen render on demand */
   #h-cards > .h-card:nth-child(n + 7) {
@@ -480,18 +574,16 @@
       --l-hairline-light: 70%; --l-hairline-dark: 48%;
       --l-border-light: 45%; --l-border-dark: 68%;
     }
+    /* a chosen pill is a solid accent with scheme-correct text, not a tint */
+    #show-fields .sub-menu-items > div:has(:checked),
+    #show-fields .sub-menu-items > div:has(:checked):hover {
+      background: var(--accent); border-color: var(--accent); color: var(--on-accent);
+    }
   }
 }
 
 /* ───────────────────────── refinements (tidy up the per-list option rules) ───────────────────────── */
 @layer refinements {
-  /* The per-card "details" switch sits neatly inside the card's top-end corner */
-  .h-card .details:checked {
-    position: absolute;
-    inset-block-start: var(--space-2xs); inset-inline-end: var(--space-2xs); inset-inline-start: auto;
-    transform: none;
-    font-size: var(--step--2);
-  }
   /* Narrow cards: a fixed track width, so every card lines up */
   #h-cards.narrow-layout .h-card,
   body:has([value=narrow-layout]:checked) .h-card {

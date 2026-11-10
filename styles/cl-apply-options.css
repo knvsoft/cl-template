@@ -34,11 +34,6 @@
     justify-content: space-between;
   }
 
-  .h-card:not(:has(.details:checked)) {
-    min-width: initial;
-    width: auto;
-  }
-
   body:has([value=narrow-layout]:checked) .h-card {
     flex-flow: column;
     flex-grow: 1;
@@ -87,37 +82,66 @@
     display: flex;
   }
 
-  .h-card .details:checked {
+  /* A card has two states, one surface each.
+     Open: the card holds the name panel (name, organisation, comment) and the field groups.
+     Collapsed: the card itself is the row, with one 12 inset, no inner panel and no shadow at rest. */
+
+  /* The details switch sits at the end of the name's line, in both states. The visible "Show card details"
+     label stays hidden (.h-card label, cl.css); the switch's own name says whose details it shows. */
+  .name-and-org:has(.details) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--space-2xs);
+  }
+
+  .name-and-org:has(.details) > * {
+    grid-column: 1 / -1;
+  }
+
+  .name-and-org:has(.details) > .p-name {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .h-card .name-and-org > .details {
+    grid-column: 2;
+    grid-row: 1;
     align-self: start;
+    margin-block-start: calc((var(--step-1) * var(--line-height-tight) - var(--switch-height) * 0.9) / 2);
+    font-size: var(--step--1);
+  }
+
+  /* the switch looks smaller than its target: the hit area reaches 12 px past it */
+  .h-card .details.switch::after {
+    content: "";
     position: absolute;
-    inset-block-start: -.25rem;
-    inset-inline-start: -.5rem;
-    transform: scale(.6);
+    inset: -0.75rem;
   }
 
-  .h-card .details:not(:checked) {
-    display: none;
+  /* Collapsed: the name (muted) and the organisation line stay; the details and the comment go */
+  #h-cards .h-card:not(:has(.details:checked)) {
+    padding: var(--space-xs);
+    box-shadow: none;
   }
 
-  .h-card:not(:has(.details:checked)) label {
-    display: revert;
-    text-align: center;
-    cursor: pointer;
-    flex: 1;
+  #h-cards .h-card:not(:has(.details:checked)) .p-name {
+    color: var(--text-2);
   }
 
-  #h-cards .h-card:not(:has(.details:checked)) :is(.p-name, .p-name+p, dl) {
+  #h-cards .h-card:not(:has(.details:checked)) :is(dl, label) {
     display: none;
   }
 
   #h-cards .name-and-org:not(:has(.details:checked)) {
-    display: flex;
-    justify-content: start;
-    column-gap: .5rem;
+    flex: 1 1 100%;
+    align-items: center;
+    padding: 0;
+    background: none;
   }
 
-  .h-card:not(:has(.details:checked)) {
-    display: inline-block;
+  #h-cards .h-card:not(:has(.details:checked)) .name-and-org > .details {
+    align-self: center;
+    margin-block-start: 0;
   }
 
   body:has( #font-size [value="1"]:checked) .h-card dd {

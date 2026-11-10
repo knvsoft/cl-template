@@ -93,6 +93,8 @@ async function initApplication() {
 
   $$('[data-js-req]').forEach(el => el.hidden = false);
 
+  layoutPillGroup();
+
   document.body.addEventListener('click', onClick);
   document.body.addEventListener('change', onChange);
   $('input[type=range]')?.addEventListener('input', performAction);
@@ -100,6 +102,54 @@ async function initApplication() {
 
   await loadSettings();
   showCardWidthValue();
+}
+
+// Picks the Show bar's layout (data-pill-layout on .actions-container: inline, below or boxed; see cl.css) from the
+// pill group's natural one-line width. The width is the same whatever the layout: the label never changes size
+// between layouts, and an unchosen pill counts its tick, so toggling a pill can never make the bar flip back.
+// The bar may be hidden at first (display: none measures 0); the ResizeObserver fires when it is shown.
+function layoutPillGroup() {
+  const bar = $('.actions-container');
+  const group = bar?.querySelector('#show-fields');
+  const label = group?.firstElementChild;
+  if (!bar || !group || !label) return;
+  const px = (value) => parseFloat(value) || 0;
+  const rem = () => px(getComputedStyle(document.documentElement).fontSize);
+
+  function textWidth(el) {
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    return range.getBoundingClientRect().width;
+  }
+
+  function naturalGroupWidth() {
+    const pills = [...group.querySelectorAll('.sub-menu-items > div')]
+      .filter((pill) => getComputedStyle(pill).display !== 'none');
+    const gap = px(getComputedStyle(group.querySelector('.sub-menu-items')).columnGap);
+    let width = 0;
+    for (const pill of pills) {
+      const fontSize = px(getComputedStyle(pill).fontSize);
+      const tick = pill.querySelector(':checked') ? 0 : fontSize * (0.8 - 0.1 + 0.333);   // the tick's room: width + negative margin + gap, in em
+      width += pill.getBoundingClientRect().width + tick;
+    }
+    width += gap * Math.max(0, pills.length - 1);
+    width += textWidth(label) + 0.25 * rem() /* the label's padding-inline-end, --space-3xs */ + px(getComputedStyle(group).columnGap);
+    return Math.ceil(width);
+  }
+
+  function choose() {
+    if (!bar.clientWidth) return;   // hidden: nothing to measure yet
+    const style = getComputedStyle(bar);
+    const inner = bar.clientWidth - px(style.paddingInlineStart) - px(style.paddingInlineEnd);
+    const natural = naturalGroupWidth();
+    const filterMin = 14 * rem();   // --measure-filter
+    const next = filterMin + px(style.columnGap) + natural <= inner ? 'inline' : natural <= inner ? 'below' : 'boxed';
+    if (bar.dataset.pillLayout !== next) bar.dataset.pillLayout = next;
+  }
+
+  new ResizeObserver(choose).observe(bar);
+  document.fonts?.ready.then(choose);
+  choose();
 }
 
 // Keeps the Card width slider's value line (#h-card-width-value) in step with the slider

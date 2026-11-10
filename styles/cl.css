@@ -342,7 +342,7 @@
   filter-input { display: flex; }
   filter-input input { inline-size: 100%; }
 
-  /* Pill group: a label ("Show:") and its pills, in one of three layouts that layoutPillGroup() (scripts/cl-main.js)
+  /* Pill group: a label ("Show:") and its pills, in one of three layouts that layoutPillGroup() (the page script)
      picks from the group's natural one-line width, as data-pill-layout on the bar:
      inline : [filter ........][Show: (pill)(pill)(pill)…]      everything on one line
      below  : [filter ...........................................]

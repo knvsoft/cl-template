@@ -473,7 +473,7 @@
     background: var(--surface-raised);
     border-radius: var(--radius-s);
   }
-  .p-name { font-size: var(--step-1); font-weight: var(--weight-bold); line-height: var(--line-height-tight); text-wrap: balance; }
+  .p-name { font-size: var(--step-1); font-weight: var(--weight-bold); line-height: var(--line-height-tight); text-wrap: balance; overflow-wrap: break-word; }
   .name-and-org .p-org, .name-and-org .p-name + p { color: var(--text-2); }
   .h-card dl {
     flex: 1 1 var(--measure-card); max-inline-size: 100%;   /* a long word can't push the part past the card */

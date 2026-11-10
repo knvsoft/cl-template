@@ -94,6 +94,7 @@ async function initApplication() {
   $$('[data-js-req]').forEach(el => el.hidden = false);
 
   layoutPillGroup();
+  watchStuckBar();
 
   document.body.addEventListener('click', onClick);
   document.body.addEventListener('change', onChange);
@@ -150,6 +151,49 @@ function layoutPillGroup() {
   new ResizeObserver(choose).observe(bar);
   document.fonts?.ready.then(choose);
   choose();
+}
+
+// Only the filter stays stuck. While the Show bar is stuck at the top (data-stuck) and not on one row, cl.css clips it
+// to the filter row, so the height (and so the cards' place) never changes; --stuck-clip is where that row ends,
+// in px from the bar's top, padding included. A 1 px sentinel just before the bar says when it sticks: no scroll listener.
+function watchStuckBar() {
+  const bar = $('.actions-container');
+  const filter = bar?.querySelector('filter-input');
+  if (!bar || !filter || !('IntersectionObserver' in window)) return;
+  const px = (value) => parseFloat(value) || 0;
+
+  const sentinel = document.createElement('div');
+  sentinel.setAttribute('aria-hidden', 'true');
+  sentinel.style.cssText = 'block-size: 1px; margin: 0; padding: 0; pointer-events: none; visibility: hidden;';
+  bar.before(sentinel);
+
+  function measureClip() {
+    if (!bar.clientHeight) return;   // hidden: nothing to measure yet
+    const clip = Math.round((filter.getBoundingClientRect().bottom - bar.getBoundingClientRect().top + px(getComputedStyle(bar).paddingBlockEnd)) * 100) / 100;
+    if (clip > 0 && bar.style.getPropertyValue('--stuck-clip') !== `${clip}px`) bar.style.setProperty('--stuck-clip', `${clip}px`);
+  }
+
+  // The bar sticks when its top reaches --sticky-gap: that is when the sentinel (one margin above it) leaves the
+  // viewport shrunk by (gap - margin). The margins come from rem, so the observer is made again if they change.
+  let observer = null, observedMargin = null;
+  function observeSentinel() {
+    const style = getComputedStyle(bar);
+    const margin = Math.round(px(style.top) - px(style.marginBlockStart));
+    if (margin === observedMargin) return;
+    observedMargin = margin;
+    observer?.disconnect();
+    observer = new IntersectionObserver(([entry]) => {
+      const stuck = !entry.isIntersecting && !!entry.rootBounds && entry.boundingClientRect.bottom <= entry.rootBounds.top;
+      if (stuck) bar.dataset.stuck = ''; else delete bar.dataset.stuck;
+    }, { rootMargin: `${-margin}px 0px 0px 0px` });
+    observer.observe(sentinel);
+  }
+
+  new ResizeObserver(() => { measureClip(); observeSentinel(); }).observe(bar);
+  new ResizeObserver(measureClip).observe(filter);
+  document.fonts?.ready.then(() => { measureClip(); observeSentinel(); });
+  measureClip();
+  observeSentinel();
 }
 
 // Keeps the Card width slider's value line (#h-card-width-value) in step with the slider

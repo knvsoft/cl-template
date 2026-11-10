@@ -499,6 +499,24 @@
     backdrop-filter: blur(var(--glass-blur));
     box-shadow: var(--shadow-card);
   }
+  /* Only the filter stays stuck. Stuck (data-stuck, set by watchStuckBar() in the page script) and not on one row, the bar is
+     clipped to its filter row: the height is unchanged, so the cards do not move. --stuck-clip is that row's bottom edge, in
+     px from the bar's top (the script measures it). At rest the clip is a box well outside the bar, so the shadow shows and the
+     clip can animate. Stuck, the shadow is cut with the rest: filter: drop-shadow() would be clipped too (filters run before
+     clip-path), so the stuck filter has none. The hidden pills cannot be tapped or reached. */
+  .actions-container:not([data-pill-layout="inline"]) {
+    clip-path: inset(-1.5rem -1.5rem -1.5rem -1.5rem round 0 0 var(--radius-m) var(--radius-m));
+  }
+  .actions-container[data-stuck]:not([data-pill-layout="inline"]) {
+    clip-path: inset(0 0 calc(100% - var(--stuck-clip, 100%)) 0 round 0 0 var(--radius-m) var(--radius-m));
+    pointer-events: none;
+  }
+  .actions-container[data-stuck]:not([data-pill-layout="inline"]) > filter-input { pointer-events: auto; }
+  .actions-container[data-stuck]:not([data-pill-layout="inline"]) > :has(> #show-fields) { visibility: hidden; }
+  @media (prefers-reduced-motion: no-preference) {
+    .actions-container { transition: clip-path var(--duration-quick) var(--ease-out); }
+    .actions-container > :has(> #show-fields) { transition: visibility var(--duration-quick) var(--ease-out); }
+  }
   .actions-container input[type="search"] { font-size: var(--step--1); }
   /* Safari on iPhone zooms the page when a field under 16 px gets focus */
   @media (pointer: coarse) {

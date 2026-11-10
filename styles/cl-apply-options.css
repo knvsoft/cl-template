@@ -82,6 +82,13 @@
     display: flex;
   }
 
+  /* With the comment hidden (neither predicate above holds) the name panel would hold only the name and the switch,
+     a box in a box: no panel then; the switch keeps its place on the name's line. */
+  .name-and-org:not(:is(.show-p-note, body:has(#cb-p-note:checked)) *) {
+    padding: 0;
+    background: none;
+  }
+
   /* A card has two states, one surface each.
      Open: the card holds the name panel (name, organisation, comment) and the field groups.
      Collapsed: the card itself is the row, with one 12 inset, no inner panel and no shadow at rest. */

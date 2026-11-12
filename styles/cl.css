@@ -301,7 +301,7 @@
   /* Layout: a segmented control made of the two native radios (Apple HIG, design system §5).
      The legend and the control share a row: the legend floats to the start, the control to the end, sized to its
      segments, which are equal width (each as wide as the widest label, never stretched to fill the group). The control
-     drops under the title when the row is too narrow, and Card width / Arrange cards stay on full rows below. When
+     goes under the title (at the start) when the row is too narrow, and Card width / Arrange cards stay on full rows below. When
      even its own row cannot hold the segments side by side (very large text, longer words) a container query on the
      group stacks them, each the full width. */
   .menu-group[name="layout"] { container-type: inline-size; }
@@ -328,11 +328,15 @@
     border-radius: calc(var(--radius-s) - var(--space-3xs));
     cursor: pointer;
   }
+  /* Too narrow for the title and the control on one row: the control goes under the title, at the start (a float that
+     wraps would land at the end), the title at its usual height. */
+  @container (inline-size < 15em) {
+    .menu-group[name="layout"] > legend { inline-size: 100%; block-size: auto; display: block; margin-block-end: var(--space-xs); }
+    .menu-group[name="layout"] > .segmented { float: none; clear: both; display: grid; inline-size: max-content; }
+  }
+  /* Not even its own row holds the segments side by side: stack them, each the full width. */
   @container (inline-size < 10.5em) {
-    .menu-group[name="layout"] > .segmented {
-      float: none; clear: both; display: grid;
-      grid-auto-flow: row; grid-auto-columns: auto;
-    }
+    .menu-group[name="layout"] > .segmented { inline-size: auto; grid-auto-flow: row; grid-auto-columns: auto; }
   }
   .segmented input { position: absolute; opacity: 0; pointer-events: none; }
   .segmented label:has(:checked) { background: var(--surface-card); box-shadow: var(--shadow-card); font-weight: var(--weight-medium); }

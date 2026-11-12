@@ -299,6 +299,7 @@
      (very large text, longer words) a container query on the group stacks them, each the full width. */
   .menu-group[name="layout"] {
     flex-direction: row; flex-wrap: wrap; align-items: center;
+    align-content: start;                 /* a group stretched to its grid row keeps its rows at the top */
     column-gap: var(--space-s);
     container-type: inline-size;
   }

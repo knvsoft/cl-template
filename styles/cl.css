@@ -270,17 +270,23 @@
     padding-block-start: var(--space-s);
     border-block-start: var(--border-thin) solid var(--hairline);
   }
+  /* A group is a block (flow-root), not a flex column: a flex fieldset's <legend> is always its "rendered legend" in
+     WebKit (a float on a flex item computes to none), which sits on the group's top border and can't share a row.
+     Here the legend is a real float, so it stays inside the padding; children are spaced by margins. */
   .menu-group {
-    display: flex; flex-direction: column; gap: var(--space-xs);
+    display: flow-root;
     padding: var(--space-s) var(--gutter-s);
     background: var(--surface-card);
     border: var(--border-thin) solid var(--hairline);
     border-radius: var(--radius-m);
   }
   .menu-group > legend {
-    float: inline-start; inline-size: 100%;     /* keeps the legend inside the group's padding */
+    float: left; float: inline-start; inline-size: 100%;     /* `left` first for a WebKit without logical floats */
+    margin-block-end: var(--space-xs);
     font-size: var(--step-0); font-weight: var(--weight-bold);
   }
+  .menu-group > legend + * { clear: both; }
+  .menu-group > :not(legend) + :not(legend) { margin-block-start: var(--space-xs); }
   .field { display: flex; flex-direction: column; gap: var(--space-3xs); }
   .field > label { font-size: var(--step--1); color: var(--text-2); }
   .field select { inline-size: 100%; }
@@ -293,21 +299,23 @@
   .destructive { color: var(--danger); border-color: var(--danger); }
 
   /* Layout: a segmented control made of the two native radios (Apple HIG, design system §5).
-     It sits at the end of the legend's row, sized to its segments, which are equal width (each as wide as the
-     widest label, never stretched to fill the group). The row wraps under the title when it is too narrow, and
-     Card width / Arrange cards stay on full rows below. When even its own row cannot hold the segments side by side
-     (very large text, longer words) a container query on the group stacks them, each the full width. */
-  .menu-group[name="layout"] {
-    flex-direction: row; flex-wrap: wrap; align-items: center;
-    align-content: start;                 /* a group stretched to its grid row keeps its rows at the top */
-    column-gap: var(--space-s);
-    container-type: inline-size;
+     The legend and the control share a row: the legend floats to the start, the control to the end, sized to its
+     segments, which are equal width (each as wide as the widest label, never stretched to fill the group). The control
+     drops under the title when the row is too narrow, and Card width / Arrange cards stay on full rows below. When
+     even its own row cannot hold the segments side by side (very large text, longer words) a container query on the
+     group stacks them, each the full width. */
+  .menu-group[name="layout"] { container-type: inline-size; }
+  .menu-group[name="layout"] > legend {
+    inline-size: auto; margin-block-end: 0;
+    display: flex; align-items: center;                   /* centred on the control */
+    block-size: calc(var(--target-min) + 2 * var(--space-3xs));
   }
-  .menu-group[name="layout"] > legend { inline-size: auto; flex: 1 1 auto; }
-  .menu-group[name="layout"] > .narrow-only { flex: 1 1 100%; }
+  .menu-group[name="layout"] > legend + * { clear: none; }
+  .menu-group[name="layout"] > .segmented { float: right; float: inline-end; }
+  .menu-group[name="layout"] > .narrow-only { clear: both; }
   .segmented {
     display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr;
-    flex: none; max-inline-size: 100%;
+    max-inline-size: 100%;
     padding: var(--space-3xs); gap: var(--space-3xs);
     font-size: var(--step--1);
     background: var(--surface-raised);
@@ -321,7 +329,10 @@
     cursor: pointer;
   }
   @container (inline-size < 10.5em) {
-    .segmented { grid-auto-flow: row; grid-auto-columns: auto; flex: 1 1 100%; }
+    .menu-group[name="layout"] > .segmented {
+      float: none; clear: both; display: grid;
+      grid-auto-flow: row; grid-auto-columns: auto;
+    }
   }
   .segmented input { position: absolute; opacity: 0; pointer-events: none; }
   .segmented label:has(:checked) { background: var(--surface-card); box-shadow: var(--shadow-card); font-weight: var(--weight-medium); }

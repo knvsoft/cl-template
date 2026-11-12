@@ -61,6 +61,7 @@
     --measure-filter: 14rem;
     --measure-menu: 15rem;          /* a menu group's minimum width before groups stack */
     --target-min: 2.25rem;          /* control height; grows with the reader's text size */
+    --chevron-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2.5 5.5l5.5 5.5 5.5-5.5' fill='none' stroke='black' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");   /* dropdown chevron (a mask: colour comes from the theme) */
     --underline-offset: 0.15em;
     --icon-size: 1.15em;
     --icon-size-small: 0.85em;
@@ -269,17 +270,23 @@
     padding-block-start: var(--space-s);
     border-block-start: var(--border-thin) solid var(--hairline);
   }
+  /* A group is a block (flow-root), not a flex column: a flex fieldset's <legend> is always its "rendered legend" in
+     WebKit (a float on a flex item computes to none), which sits on the group's top border and can't share a row.
+     Here the legend is a real float, so it stays inside the padding; children are spaced by margins. */
   .menu-group {
-    display: flex; flex-direction: column; gap: var(--space-xs);
+    display: flow-root;
     padding: var(--space-s) var(--gutter-s);
     background: var(--surface-card);
     border: var(--border-thin) solid var(--hairline);
     border-radius: var(--radius-m);
   }
   .menu-group > legend {
-    float: inline-start; inline-size: 100%;     /* keeps the legend inside the group's padding */
+    float: left; float: inline-start; inline-size: 100%;     /* `left` first for a WebKit without logical floats */
+    margin-block-end: var(--space-xs);
     font-size: var(--step-0); font-weight: var(--weight-bold);
   }
+  .menu-group > legend + * { clear: both; }
+  .menu-group > :not(legend) + :not(legend) { margin-block-start: var(--space-xs); }
   .field { display: flex; flex-direction: column; gap: var(--space-3xs); }
   .field > label { font-size: var(--step--1); color: var(--text-2); }
   .field select { inline-size: 100%; }
@@ -291,20 +298,45 @@
   .button-row > button { max-inline-size: 100%; }
   .destructive { color: var(--danger); border-color: var(--danger); }
 
-  /* Layout: a segmented control made of the two native radios */
-  /* Equal columns while the labels fit side by side; each label stacks to its own full-width row when they do not. */
+  /* Layout: a segmented control made of the two native radios (Apple HIG, design system §5).
+     The legend and the control share a row: the legend floats to the start, the control to the end, sized to its
+     segments, which are equal width (each as wide as the widest label, never stretched to fill the group). The control
+     goes under the title (at the start) when the row is too narrow, and Card width / Arrange cards stay on full rows below. When
+     even its own row cannot hold the segments side by side (very large text, longer words) a container query on the
+     group stacks them, each the full width. */
+  .menu-group[name="layout"] { container-type: inline-size; }
+  .menu-group[name="layout"] > legend {
+    inline-size: auto; margin-block-end: 0;
+    display: flex; align-items: center;                   /* centred on the control */
+    block-size: calc(var(--target-min) + 2 * var(--space-3xs));
+  }
+  .menu-group[name="layout"] > legend + * { clear: none; }
+  .menu-group[name="layout"] > .segmented { float: right; float: inline-end; }
+  .menu-group[name="layout"] > .narrow-only { clear: both; }
   .segmented {
-    display: flex; flex-wrap: wrap;
+    display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+    max-inline-size: 100%;
     padding: var(--space-3xs); gap: var(--space-3xs);
+    font-size: var(--step--1);
     background: var(--surface-raised);
     border-radius: var(--radius-s);
   }
   .segmented label {
     display: grid; place-items: center; text-align: center;
-    flex: 1 1 0; min-inline-size: max-content; max-inline-size: 100%;
+    min-inline-size: 0; overflow-wrap: anywhere; padding-inline: var(--space-xs);   /* a label that cannot fit wraps, never overflows */
     min-block-size: var(--target-min);
     border-radius: calc(var(--radius-s) - var(--space-3xs));
     cursor: pointer;
+  }
+  /* Too narrow for the title and the control on one row: the control goes under the title, at the start (a float that
+     wraps would land at the end), the title at its usual height. */
+  @container (inline-size < 15em) {
+    .menu-group[name="layout"] > legend { inline-size: 100%; block-size: auto; display: block; margin-block-end: var(--space-xs); }
+    .menu-group[name="layout"] > .segmented { float: none; clear: both; display: grid; inline-size: max-content; }
+  }
+  /* Not even its own row holds the segments side by side: stack them, each the full width. */
+  @container (inline-size < 10.5em) {
+    .menu-group[name="layout"] > .segmented { inline-size: auto; grid-auto-flow: row; grid-auto-columns: auto; }
   }
   .segmented input { position: absolute; opacity: 0; pointer-events: none; }
   .segmented label:has(:checked) { background: var(--surface-card); box-shadow: var(--shadow-card); font-weight: var(--weight-medium); }
@@ -322,6 +354,27 @@
     border-radius: var(--radius-s);
     padding: var(--space-3xs) var(--space-2xs);
     min-block-size: var(--target-min);
+  }
+  /* Dropdown (select): the field look above plus a thin chevron-down at the end, no divider (design system §5).
+     A <select> can't draw ::after, so the field becomes a grid and its own ::after sits in the select's grid cell:
+     the chevron is centred on the select (the Theme hint is a third row, not part of the cell), is a mask filled with
+     the theme's colour (never a fixed-colour image), and never catches a tap. The system list is untouched. */
+  .field:has(> select) { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: var(--space-3xs); }
+  .field:has(> select) > label { grid-row: 1; }
+  .field:has(> select) > .hint { grid-row: 3; }
+  .field > select {
+    grid-row: 2; grid-column: 1;
+    -webkit-appearance: none; appearance: none;
+    padding-inline-end: calc(2 * var(--space-2xs) + 0.9em);
+  }
+  .field:has(> select)::after {
+    content: ""; grid-row: 2; grid-column: 1; justify-self: end; align-self: center;
+    margin-inline-end: var(--space-2xs);
+    inline-size: 0.9em; block-size: 0.9em;
+    background: var(--text-2);
+    -webkit-mask: var(--chevron-mask) center / contain no-repeat;
+    mask: var(--chevron-mask) center / contain no-repeat;
+    pointer-events: none;
   }
   :where(button) {
     background: var(--surface-card);
@@ -640,6 +693,7 @@
     .h-card, .menu-group, .list-footer-links a { border-color: var(--border); }
     .h-card dl { border-color: var(--border); }
     select, input[type="search"], input[type="text"], button:not(.destructive) { border-color: var(--text-2); }
+    .field:has(> select)::after { background: var(--text-1); }
     #show-fields .sub-menu-items > div { --pill-edge: var(--text-2); }
     /* a chosen pill is a solid accent with scheme-correct text, not a tint */
     #show-fields .sub-menu-items > div:has(:checked),
@@ -662,6 +716,7 @@
     .h-card, .menu-group, .list-footer-links a { border-color: CanvasText; }
     .actions-container:not([data-pill-layout="inline"], [data-pill-layout="below"]) #show-fields { border: var(--border-thin) solid CanvasText; }
     button { background: ButtonFace; color: ButtonText; border-color: ButtonText; }
+    .field:has(> select)::after { forced-color-adjust: none; background: CanvasText; }
     .editable[contenteditable]:not([contenteditable="false"]):not(#list-title) { border: var(--border-thin) solid CanvasText; }
     input[type="checkbox"].switch { border: var(--border-thin) solid CanvasText; }
     .segmented label:has(:checked) { background: Highlight; color: HighlightText; box-shadow: none; }

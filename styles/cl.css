@@ -165,6 +165,8 @@
     --shadow-card: 0 1px 2px var(--shadow-color), 0 2px 8px var(--shadow-color);
     --focus-ring: var(--border-thick) solid var(--accent);
     --danger: light-dark(oklch(50% 0.18 25), oklch(75% 0.14 25));
+    /* The done mark (a non-text mark, needs 3:1): 5.5:1 on every theme's card in light, 5.5–9.3:1 in dark */
+    --success: light-dark(oklch(50% 0.14 150), oklch(78% 0.16 150));
   }
 
   [data-theme="light"] { color-scheme: light; --tint: 0.004; }
@@ -189,7 +191,7 @@
     :root, [data-theme] {
       --surface-page: Canvas; --surface-card: Canvas; --surface-raised: Canvas; --surface-field: Field;
       --border: CanvasText; --hairline: GrayText; --text-1: CanvasText; --text-2: CanvasText;
-      --accent: Highlight; --on-accent: HighlightText; --shadow-card: none;
+      --accent: Highlight; --on-accent: HighlightText; --shadow-card: none; --success: CanvasText;
     }
   }
 }
@@ -385,6 +387,12 @@
     min-block-size: var(--target-min);
     cursor: pointer;
   }
+
+  /* A button that has just done its job (data-notice): its label is replaced for 2 s by a mark and the word, in the
+     button's own text colour; only the mark is green. The app's StatusButton. */
+  .status { display: inline-flex; align-items: center; gap: var(--space-3xs); animation: status-in var(--duration-quick) var(--ease-out); }
+  .status-mark { color: var(--success); flex: none; }
+  @keyframes status-in { from { opacity: 0; } }
 
   /* switch: a native checkbox, restyled; still a checkbox to assistive tech */
   input[type="checkbox"].switch {
@@ -662,10 +670,11 @@
 
   /* ── The reader's settings: one block each, after every rule they adjust. Defaults are untouched. ── */
 
-  /* Reduced motion: no transition runs and nothing scrolls smoothly. The one animation, the back-to-top button's
-     scroll-linked fade (above), is opacity only and stays. */
+  /* Reduced motion: no transition runs and nothing scrolls smoothly. The status fade is switched off here; the back-to-top
+     button's scroll-linked fade (above) is opacity only and stays. */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+    .status { animation: none; }
   }
 
   /* More contrast: text, outlines and field borders stop relying on tint; the sticky bar is solid. */

@@ -376,28 +376,41 @@ async function resetChanges(forAllReports = false) {
   }
 }
 
-function notify(event, reload) {
-  const notice = event?.querySelector("[data-notice]");
-  const announce = $id("announce");
-  if (notice) {
-    let noticeText = notice.dataset.notice;
-    if (typeof announce !== "undefined") {
-      announce.setAttribute("aria-label", noticeText);
+// Says `text` through the polite live region #announce, then clears it.
+function announceText(text, clearAfter = 1000) {
+  const region = $id("announce");
+  if (!region) return;
+  region.textContent = text;
+  setTimeout(() => { if (region.textContent === text) region.textContent = ""; }, clearAfter);
+}
+
+// A button with data-notice: its label is replaced by a checkmark and that word for 2 s, then comes back (the app's
+// StatusButton). The button keeps its width and its accessible name; the word is spoken through #announce.
+const statusDuration = 2000;
+const statusMarkSVG = '<svg class="status-mark" viewBox="0 0 16 16" width="1em" height="1em" aria-hidden="true" focusable="false"><path d="M3 8.5l3.2 3.2L13 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function notify(button, reload) {
+  const word = button?.dataset?.notice;
+  if (!word || button.dataset.statusActive === "true") return;
+  button.dataset.statusActive = "true";
+  announceText(word, statusDuration);
+  const original = [...button.childNodes];
+  button.setAttribute("aria-label", button.textContent.trim());
+  button.style.minInlineSize = button.getBoundingClientRect().width + "px";
+  const status = document.createElement("span");
+  status.className = "status";
+  status.setAttribute("aria-hidden", "true");
+  status.innerHTML = statusMarkSVG;
+  status.append(document.createTextNode(" " + word));
+  button.replaceChildren(status);
+  setTimeout(function () {
+    button.replaceChildren(...original);
+    button.removeAttribute("aria-label");
+    button.style.minInlineSize = "";
+    delete button.dataset.statusActive;
+    if (reload) {
+      setTimeout(function () { location.reload(); }, 300);
     }
-    notice.textContent = noticeText;
-    notice.hidden = false;
-    setTimeout(function (reload) {
-      if (typeof announce !== "undefined") {
-        announce.setAttribute("aria-label", "");
-      }
-      notice.hidden = true;
-      if (reload) {
-        setTimeout(function () {
-          location.reload();
-        }, 300);
-      }
-    }, 1000, reload);
-  }
+  }, statusDuration);
 }
 
 

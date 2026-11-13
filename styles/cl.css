@@ -51,6 +51,7 @@
     --line-height-tight: 1.2;
     --weight-regular: 400;
     --weight-medium: 500;
+    --weight-semibold: 600;
     --weight-bold: 700;
 
     --duration-quick: 150ms;
@@ -526,7 +527,8 @@
     background: var(--surface-raised);
     border-radius: var(--radius-s);
   }
-  .p-name { font-size: var(--step-1); font-weight: var(--weight-bold); line-height: var(--line-height-tight); text-wrap: balance; overflow-wrap: break-word; }
+  /* The card's name: Headline-sized on screen (as the names in Mail and Contacts), larger and bold on paper (print) */
+  .p-name { font-size: var(--step-0); font-weight: var(--weight-semibold); line-height: var(--line-height-tight); text-wrap: balance; overflow-wrap: break-word; }
   .name-and-org .p-org, .name-and-org .p-name + p { color: var(--text-2); }
   .h-card dl {
     flex: 1 1 var(--measure-card); max-inline-size: 100%;   /* a long word can't push the part past the card */
@@ -608,7 +610,8 @@
      emails break only where they would overflow. */
   .h-card dd { overflow-wrap: break-word; }
 
-  /* Footer: when the list was made, then quiet links, then a one-line credit */
+  /* Footer: when the list was made. The credit line is for paper only (print below): on screen the page shows the date
+     alone; the app's About holds the links. */
   .list-footer {
     display: flex; flex-direction: column; align-items: center; gap: var(--space-s);
     margin-block-start: var(--space-l);
@@ -617,23 +620,8 @@
     font-size: var(--step--1); color: var(--text-2);
     text-align: center;
   }
-  .list-footer-meta, .list-footer-links a { display: inline-flex; align-items: center; gap: var(--space-2xs); }
-  .list-footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2xs); }
-  .list-footer-links a {
-    min-block-size: var(--target-min);
-    max-inline-size: 100%;
-    padding-inline: var(--gutter-xs);
-    border: var(--border-thin) solid var(--hairline);
-    border-radius: var(--radius-pill);
-    color: var(--text-1);
-    text-decoration: none;
-    transition: background-color var(--duration-quick) var(--ease-out), border-color var(--duration-quick) var(--ease-out);
-  }
-  .list-footer-links a:hover { background: var(--surface-raised); border-color: var(--border); }
-  .list-footer-links a > span { min-inline-size: 0; overflow-wrap: anywhere; }
-  .list-footer-links .icon { color: var(--accent); }
-  .list-footer-links .icon--small { color: var(--text-2); }
-  .list-footer-credit a { color: var(--accent); text-underline-offset: var(--underline-offset); }
+  .list-footer-meta { display: inline-flex; align-items: center; gap: var(--space-2xs); }
+  .list-footer-credit { display: none; }
   .icon { inline-size: var(--icon-size); block-size: var(--icon-size); flex: none; }
   .icon--small { inline-size: var(--icon-size-small); block-size: var(--icon-size-small); }
 
@@ -690,7 +678,7 @@
       --glass-mix: 100%;
     }
     .actions-container { backdrop-filter: none; }
-    .h-card, .menu-group, .list-footer-links a { border-color: var(--border); }
+    .h-card, .menu-group { border-color: var(--border); }
     .h-card dl { border-color: var(--border); }
     select, input[type="search"], input[type="text"], button:not(.destructive) { border-color: var(--text-2); }
     .field:has(> select)::after { background: var(--text-1); }
@@ -713,7 +701,7 @@
   @media (forced-colors: active) {
     :root, [data-theme] { --focus-ring: var(--border-thick) solid Highlight; }
     header, .actions-container, .segmented { border: var(--border-thin) solid CanvasText; }
-    .h-card, .menu-group, .list-footer-links a { border-color: CanvasText; }
+    .h-card, .menu-group { border-color: CanvasText; }
     .actions-container:not([data-pill-layout="inline"], [data-pill-layout="below"]) #show-fields { border: var(--border-thin) solid CanvasText; }
     button { background: ButtonFace; color: ButtonText; border-color: ButtonText; }
     .field:has(> select)::after { forced-color-adjust: none; background: CanvasText; }
@@ -740,8 +728,10 @@
     #list-comment:empty::before, .p-note:empty::before { content: none; }
     .editable[contenteditable] { background: none; box-shadow: none; padding: 0; }
     #h-cards > .h-card { content-visibility: visible; }
-    .list-footer { border: 0; padding-block: var(--print-gap) 0; margin-block-start: var(--print-gap); }
-    .list-footer-links, .list-footer-credit, .list-footer .icon { display: none; }
+    .list-footer { border: 0; padding-block: var(--print-gap) 0; margin-block-start: var(--print-gap); gap: var(--space-3xs); }
+    .list-footer .icon { display: none; }
+    .list-footer-credit { display: block; color: var(--text-2); }
+    .p-name { font-size: var(--step-1); font-weight: var(--weight-bold); }
     .actions-container { position: static; }
     .h-card {
       break-inside: avoid;

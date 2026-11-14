@@ -15,6 +15,17 @@ const reportPrefix = `${bodyId}-${revision}`;
 const selectorsForSettings = '#cb-show-menu, #cb-toggle-edit, #menu :is(input, select), #show-fields input';
 const listSettingsStyleId = 'cl-css-vars';
 
+// Themes offered before the purpose-led five (CL s92) → [theme, appearance]. cl.css keeps their names as aliases, so
+// a page exported with one still opens the same way without this script.
+const retiredThemes = {
+  auto: ['clBlue', 'auto'],
+  light: ['clBlue', 'light'],
+  dark: ['clBlue', 'dark'],
+  'light-grape': ['clBlue', 'light'],
+  'dark-dim': ['calm', 'dark'],
+  'dark-choco': ['calm', 'dark'],
+};
+
 const clStore = createStore('clDB', 'clStore');
 
 // @ts-ignore
@@ -248,6 +259,14 @@ async function performAction(eventOrElement) {
       document.body.dataset.theme = input.value;
       break;
 
+    case 'setAppearance':
+      // Automatic follows the system; Light or Dark forces it for any theme (cl.css, data-appearance).
+      for (const el of [document.firstElementChild, document.body]) {
+        // @ts-ignore
+        if (input.value === 'auto') delete el.dataset.appearance; else el.dataset.appearance = input.value;
+      }
+      break;
+
     case 'resetChanges':
       await resetChanges(false);
       notify(input, true);
@@ -359,7 +378,18 @@ async function loadSettings() {
             element.value = value;
         }
       } else if (element instanceof HTMLSelectElement) {
-        element.value = value;
+        if (id === 'theme' && retiredThemes[value]) {
+          // A theme saved before the five (CL s92): its nearest theme, and its light or dark as the appearance.
+          const [theme, appearance] = retiredThemes[value];
+          element.value = theme;
+          const appearanceSelect = $('#appearance');
+          if (appearance && appearanceSelect instanceof HTMLSelectElement && !settings.has('appearance')) {
+            appearanceSelect.value = appearance;
+            performAction(appearanceSelect);
+          }
+        } else {
+          element.value = value;
+        }
       }
       performAction(element);
     }

@@ -143,12 +143,12 @@
 @layer themes {
   :root,
   [data-theme] {
-    /* Defaults = clBlue, which follows the system */
+    /* Defaults = Lister Blue (the app icon's blue, CL s88), which follows the system */
     color-scheme: light dark;
-    --hue: 220;
+    --hue: 250;
     --tint: 0.02;
-    --accent-light: oklch(49% 0.09 220);   /* ≈ #23728C, the app's light accent */
-    --accent-dark: oklch(78% 0.12 220);    /* ≈ #41C4EF, the app's dark accent */
+    --accent-light: oklch(53% 0.19 257);   /* ≈ #0066D6, the app's light accent (the icon's lower blue, deepened): 5.4:1 on white */
+    --accent-dark: oklch(73.4% 0.146 246); /* ≈ #4FB0FF, the app's dark accent (the icon's upper blue): 7.4:1 on a dark card */
 
     --surface-page: light-dark(oklch(var(--l-page-light) var(--tint) var(--hue)), oklch(var(--l-page-dark) var(--tint) var(--hue)));
     --surface-card: light-dark(oklch(var(--l-card-light) calc(var(--tint) / 3) var(--hue)), oklch(var(--l-card-dark) var(--tint) var(--hue)));
@@ -159,7 +159,7 @@
     --text-1: light-dark(oklch(var(--l-text-1-light) calc(var(--tint) * 1.5) var(--hue)), oklch(var(--l-text-1-dark) calc(var(--tint) / 2) var(--hue)));
     --text-2: light-dark(oklch(var(--l-text-2-light) calc(var(--tint) * 1.5) var(--hue)), oklch(var(--l-text-2-dark) var(--tint) var(--hue)));
     --accent: light-dark(var(--accent-light), var(--accent-dark));
-    /* Text on a solid accent: white on the light accents (6.1:1 clBlue, 7.1:1 grape), near-black in the theme's hue on the dark ones (10.1:1 clBlue, 8.9:1 choco) */
+    /* Text on a solid accent: white on the light accents (5.4:1 Lister Blue, 7.1:1 grape), near-black in the theme's hue on the dark ones (8.2:1 Lister Blue, 8.9:1 choco) */
     --on-accent: light-dark(white, oklch(15% var(--tint) var(--hue)));
     --shadow-color: light-dark(oklch(30% var(--tint) var(--hue) / 0.12), oklch(0% 0 0 / 0.5));
     --shadow-card: 0 1px 2px var(--shadow-color), 0 2px 8px var(--shadow-color);

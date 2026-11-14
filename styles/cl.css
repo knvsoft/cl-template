@@ -169,23 +169,68 @@
     --success: light-dark(oklch(50% 0.14 150), oklch(78% 0.16 150));
   }
 
-  [data-theme="light"] { color-scheme: light; --tint: 0.004; }
-  [data-theme="dark"]  { color-scheme: dark;  --tint: 0.004; --l-page-dark: 10%; --l-card-dark: 15%; --l-raised-dark: 20%; }
-  [data-theme="dark-dim"] {
-    color-scheme: dark; --tint: 0.008;
-    --l-page-dark: 32%; --l-card-dark: 37%; --l-raised-dark: 42%; --l-field-dark: 28%;
-    --l-hairline-dark: 46%; --l-border-dark: 62%; --l-text-2-dark: 85%;
+  /* The themes (CL s92, Kana approved the canvas "List page themes — proposal"): five, each named for what it is for and
+     each a light + dark pair that follows the reader's Light/Dark setting. Appearance (data-appearance, below) forces one.
+     Every pair measured: text ≥ 4.5:1 on page, card and raised; control edges and a chosen pill's outline ≥ 3:1.
+     Standard is the defaults above (data-theme="clBlue"). */
+
+  /* List colour: the list's own tag colour leads. The app sets --list-hue and the two accents on <html> (each checked
+     ≥ 4.5:1 on the card); without them it falls back to Lister Blue. */
+  [data-theme="list"] {
+    --hue: var(--list-hue, 250); --tint: 0.012;
+    --accent-light: var(--list-accent-light, oklch(53% 0.19 257));
+    --accent-dark: var(--list-accent-dark, oklch(73.4% 0.146 246));
   }
-  [data-theme="light-grape"] {
-    color-scheme: light; --hue: 310; --tint: 0.035;
-    --accent-light: oklch(48% 0.16 310);
+
+  /* Paper: warm cream with no pure white anywhere, dark ink-blue links; warm brown-black in dark. For long reading
+     (cream backgrounds: British Dyslexia Association style guide), closest to print. */
+  [data-theme="paper"] {
+    --hue: 85; --tint: 0.02;
+    --l-page-light: 95.3%; --l-card-light: 97.6%; --l-raised-light: 92%; --l-field-light: 98.5%;
+    --l-border-light: 58%; --l-hairline-light: 86%; --l-text-1-light: 22%; --l-text-2-light: 43%;
+    --l-page-dark: 21%; --l-card-dark: 24.6%; --l-raised-dark: 28.4%; --l-field-dark: 18%;
+    --l-border-dark: 54%; --l-hairline-dark: 33%; --l-text-1-dark: 92.7%; --l-text-2-dark: 76.5%;
+    --accent-light: oklch(42.6% 0.115 257);
+    --accent-dark: oklch(79.7% 0.074 254);
   }
-  [data-theme="dark-choco"] {
-    color-scheme: dark; --hue: 55; --tint: 0.035;
-    --accent-dark: oklch(76% 0.12 60);
+
+  /* High contrast: black and white, outlines instead of shadows, heavier type; a yellow accent in dark. The app also
+     picks it by itself under Increase Contrast. */
+  [data-theme="contrast"] {
+    --hue: 0; --tint: 0;
+    --l-page-light: 100%; --l-card-light: 100%; --l-raised-light: 95.5%; --l-field-light: 100%;
+    --l-border-light: 0%; --l-hairline-light: 0%; --l-text-1-light: 0%; --l-text-2-light: 24%;
+    --l-page-dark: 0%; --l-card-dark: 0%; --l-raised-dark: 19%; --l-field-dark: 8%;
+    --l-border-dark: 100%; --l-hairline-dark: 100%; --l-text-1-dark: 100%; --l-text-2-dark: 94%;
+    --accent-light: oklch(40.5% 0.171 261);
+    --accent-dark: oklch(88.5% 0.181 95);
+    --on-accent: light-dark(white, black);
+    --shadow-card: none;
+    --border-thin: 1.5px;
+    --weight-semibold: 700;
   }
-  /* "auto" in the theme menu = follow the system with neutral surfaces */
-  [data-theme="auto"] { color-scheme: light dark; --tint: 0.004; }
+
+  /* Calm: low glare both ways — no white in light; warm charcoal and a low-blue amber accent in dark. Also stands in for
+     the retired dark themes (Dim, Choco). */
+  [data-theme="calm"], [data-theme="dark-dim"], [data-theme="dark-choco"] {
+    --hue: 80; --tint: 0.012;
+    --l-page-light: 93.3%; --l-card-light: 95.7%; --l-raised-light: 90.6%; --l-field-light: 96.5%;
+    --l-border-light: 57%; --l-hairline-light: 84%; --l-text-1-light: 26.7%; --l-text-2-light: 44.7%;
+    --l-page-dark: 19.3%; --l-card-dark: 22.9%; --l-raised-dark: 26.8%; --l-field-dark: 17%;
+    --l-border-dark: 55%; --l-hairline-dark: 34%; --l-text-1-dark: 89.7%; --l-text-2-dark: 71.7%;
+    --accent-light: oklch(47.8% 0.081 254);
+    --accent-dark: oklch(77.1% 0.117 73);
+  }
+
+  /* Retired themes (Neutral, Light, Dark, Grape): not offered any more; a page saved with one opens as Standard, keeping
+     its light or dark. Dim and Choco open as Calm in dark (above). */
+  [data-theme="light"], [data-theme="light-grape"] { color-scheme: light; }
+  [data-theme="dark"], [data-theme="dark-dim"], [data-theme="dark-choco"] { color-scheme: dark; }
+
+  /* Appearance: Automatic (no attribute) follows the system; Light or Dark forces it for any theme. On <html> and <body>
+     (each carries data-theme, whose block resets color-scheme). */
+  :is([data-appearance="light"], [data-appearance="light"] [data-theme]) { color-scheme: light; }
+  :is([data-appearance="dark"], [data-appearance="dark"] [data-theme]) { color-scheme: dark; }
 
   @media (forced-colors: active) {
     :root, [data-theme] {
@@ -679,7 +724,8 @@
 
   /* More contrast: text, outlines and field borders stop relying on tint; the sticky bar is solid. */
   @media (prefers-contrast: more) {
-    :root, [data-theme] {
+    /* High contrast already sets stronger values; this would weaken its black and white edges. */
+    :root:not([data-theme="contrast"]), [data-theme]:not([data-theme="contrast"]) {
       --l-text-2-light: 32%; --l-text-2-dark: 88%;           /* secondary and hint text */
       --l-hairline-light: 70%; --l-hairline-dark: 48%;
       --l-border-light: 45%; --l-border-dark: 68%;

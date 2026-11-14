@@ -11,6 +11,23 @@ Contacts Lister is a utility that enables you to generate HTML lists or QRcodes 
 - `index.html`: a sample list that loads both, in that order.
 - `scripts/cl-main.js`: the sample's list script.
 
+## Themes
+
+Five themes, each named for what it is for and each a light and dark pair that follows the reader's Light/Dark setting
+(`data-theme` on `<html>` and `<body>`):
+
+| `data-theme` | Name | For |
+|---|---|---|
+| `clBlue` | Standard | Lister Blue on cool neutrals. The default. |
+| `list` | List colour | The list's tag colour leads; the app sets `--list-hue`, `--list-accent-light` and `--list-accent-dark`. |
+| `paper` | Paper | Warm cream, no pure white, ink-blue links: long reading, closest to print. |
+| `contrast` | High contrast | Black and white, outlines instead of shadows, heavier type. |
+| `calm` | Calm | Low glare both ways: no white in light, warm charcoal and an amber accent in dark. |
+
+`data-appearance="light"` or `"dark"` forces one look for any theme; without it the system decides. Every pair keeps
+text at 4.5:1 or more and control edges at 3:1 or more. The themes offered before (`auto`, `light`, `dark`, `dark-dim`,
+`light-grape`, `dark-choco`) still open: Standard or Calm, keeping their light or dark.
+
 ## Contribution
 
 Contacts Lister Template has its own contributing guidelines. Read [CONTRIBUTING.md](https://github.com/knvsoft/cl-template/blob/main/CONTRIBUTING.md) through before you create an issue or make a pull request.

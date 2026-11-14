@@ -119,15 +119,21 @@
 <div class="field">
 <label for="theme">Theme</label>
 <select id="theme" data-action="setTheme" aria-describedby="theme-hint">
-<option value="clBlue" selected>Contacts Lister</option>
-<option value="auto">Neutral</option>
+<option value="clBlue" selected>Standard</option>
+<option value="list">List colour</option>
+<option value="paper">Paper</option>
+<option value="contrast">High contrast</option>
+<option value="calm">Calm</option>
+</select>
+<span class="hint" id="theme-hint">Each theme has a light and a dark look.</span>
+</div>
+<div class="field">
+<label for="appearance">Appearance</label>
+<select id="appearance" data-action="setAppearance">
+<option value="auto" selected>Automatic</option>
 <option value="light">Light</option>
 <option value="dark">Dark</option>
-<option value="dark-dim">Dim</option>
-<option value="light-grape">Grape</option>
-<option value="dark-choco">Choco</option>
 </select>
-<span class="hint" id="theme-hint">Contacts Lister and Neutral follow your device's light or dark setting.</span>
 </div>
 </fieldset>
 

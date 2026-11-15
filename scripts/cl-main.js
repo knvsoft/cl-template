@@ -254,17 +254,14 @@ async function performAction(eventOrElement) {
       break;
 
     case 'setTheme':
-      // @ts-ignore
-      document.firstElementChild.dataset.theme = input.value;
-      document.body.dataset.theme = input.value;
+      // The theme pictures are radios: only the chosen one sets the theme (loading saved settings walks every radio).
+      if (!(input instanceof HTMLInputElement) || input.type !== 'radio' || input.checked) {
+        setTheme(input.value);
+      }
       break;
 
     case 'setAppearance':
-      // Automatic follows the system; Light or Dark forces it for any theme (cl.css, data-appearance).
-      for (const el of [document.firstElementChild, document.body]) {
-        // @ts-ignore
-        if (input.value === 'auto') delete el.dataset.appearance; else el.dataset.appearance = input.value;
-      }
+      setAppearance(input.value);
       break;
 
     case 'resetChanges':
@@ -281,6 +278,33 @@ async function performAction(eventOrElement) {
       globalThis[action]?.apply(this, arguments);
   }
 }
+
+// The page's theme (cl.css [data-theme]) on <html> and <body>, and the matching picture chosen — its property and its
+// attribute, so a copy of the page made from its markup opens the same way.
+function setTheme(theme) {
+  for (const el of [document.documentElement, document.body]) el.dataset.theme = theme;
+  $$('input[name="theme"]').forEach((radio) => {
+    const on = radio.value === theme;
+    radio.checked = on;
+    radio.toggleAttribute('checked', on);
+  });
+}
+
+// Automatic follows the system; Light or Dark forces it for any theme (cl.css, data-appearance). The menu's option
+// follows, property and attribute.
+function setAppearance(appearance) {
+  for (const el of [document.documentElement, document.body]) {
+    if (appearance === 'light' || appearance === 'dark') el.dataset.appearance = appearance; else delete el.dataset.appearance;
+  }
+  const select = $id('appearance');
+  if (select instanceof HTMLSelectElement) {
+    select.value = appearance === 'light' || appearance === 'dark' ? appearance : 'auto';
+    [...select.options].forEach((option) => option.toggleAttribute('selected', option.value === select.value));
+  }
+}
+
+// The fonts the menu offers (CL s101): a page saved with another opens in System.
+const offeredFont = (value) => !!$(`#font option[value="${CSS.escape(String(value))}"]`);
 
 function getAction(input) {
   return input?.closest('[data-action]')?.dataset.action;
@@ -366,33 +390,29 @@ async function loadSettings() {
   let type, checked, value;
   settings.forEach((values, id) => {
     [type, checked, value] = values;
-    if (id) {
-      const element = $(`#${id}`);
-      if (element instanceof HTMLInputElement) {
-        switch (type) {
-          case "checkbox":
-          case "radio":
-            element.checked = checked;
-            break;
-          default:
-            element.value = value;
-        }
-      } else if (element instanceof HTMLSelectElement) {
-        if (id === 'theme' && retiredThemes[value]) {
-          // A theme saved before the five (CL s92): its nearest theme, and its light or dark as the appearance.
-          const [theme, appearance] = retiredThemes[value];
-          element.value = theme;
-          const appearanceSelect = $('#appearance');
-          if (appearance && appearanceSelect instanceof HTMLSelectElement && !settings.has('appearance')) {
-            appearanceSelect.value = appearance;
-            performAction(appearanceSelect);
-          }
-        } else {
-          element.value = value;
-        }
-      }
-      performAction(element);
+    if (!id) return;
+    if (id === 'theme') {
+      // The Theme menu saved before the pictures (a <select id="theme">): its theme, or for a theme retired in CL s92
+      // its nearest theme with its light or dark as the appearance.
+      const [theme, appearance] = retiredThemes[value] ?? [value, null];
+      if ($(`input[name="theme"][value="${CSS.escape(String(theme))}"]`)) setTheme(theme);
+      if (appearance && !settings.has('appearance')) setAppearance(appearance);
+      return;
     }
+    const element = $(`#${id}`);
+    if (element instanceof HTMLInputElement) {
+      switch (type) {
+        case "checkbox":
+        case "radio":
+          element.checked = checked;
+          break;
+        default:
+          element.value = value;
+      }
+    } else if (element instanceof HTMLSelectElement) {
+      element.value = id === 'font' && !offeredFont(value) ? '100' : value;
+    }
+    performAction(element);
   });
 }
 

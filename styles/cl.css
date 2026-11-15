@@ -101,8 +101,11 @@
     --l-text-1-light: 22%; --l-text-1-dark: 95%;
     --l-text-2-light: 44%; --l-text-2-dark: 76%;   /* labels: ≥ 4.5:1 on card and raised */
 
-    /* Font stacks: names kept for FontSelection.swift and saved page styles. */
+    /* Font stacks. The menu offers four (CL s101): System (--font-system-ui), Serif (--font-serif: New York on Apple
+       systems), Rounded (--font-rounded-sans) and Monospace (--font-monospace-code). The other names stay for pages saved
+       or exported with them, which still open in their font. */
     --font-system-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-serif: ui-serif, "New York", Charter, "Bitstream Charter", Cambria, serif;
     --font-transitional: Charter, "Bitstream Charter", "Sitka Text", Cambria, serif;
     --font-old-style: "Iowan Old Style", "Palatino Linotype", "URW Palladio L", P052, serif;
     --font-humanist: Seravek, "Gill Sans Nova", Ubuntu, Calibri, "DejaVu Sans", sans-serif;
@@ -232,6 +235,16 @@
   :is([data-appearance="light"], [data-appearance="light"] [data-theme]) { color-scheme: light; }
   :is([data-appearance="dark"], [data-appearance="dark"] [data-theme]) { color-scheme: dark; }
 
+  /* Bold text (the menu's checkbox, Text group): every weight one step heavier — regular → semibold, semibold → bold —
+     through the weight tokens, so no element needs a rule of its own. Set on <html>; <body> and the theme pictures inherit
+     it. High contrast sets its own semibold on its [data-theme] (700), which is never lighter than this. */
+  :root:has(#bold-text:checked) {
+    --weight-regular: 600;
+    --weight-medium: 700;
+    --weight-semibold: 700;
+    --weight-bold: 800;
+  }
+
   @media (forced-colors: active) {
     :root, [data-theme] {
       --surface-page: Canvas; --surface-card: Canvas; --surface-raised: Canvas; --surface-field: Field;
@@ -253,6 +266,7 @@
   body {
     font-family: var(--body-font, var(--font-system-ui));
     font-size: var(--step-0);
+    font-weight: var(--weight-regular);
     line-height: var(--line-height-body);
     padding: var(--space-m) var(--gutter);
     max-inline-size: var(--measure-page);
@@ -336,12 +350,63 @@
   .menu-group > legend + * { clear: both; }
   .menu-group > :not(legend) + :not(legend) { margin-block-start: var(--space-xs); }
   .field { display: flex; flex-direction: column; gap: var(--space-3xs); }
-  .field > label { font-size: var(--step--1); color: var(--text-2); }
+  .field > label, .field > .field-label { font-size: var(--step--1); color: var(--text-2); }
   .field select { inline-size: 100%; }
   .hint { display: block; font-size: var(--step--1); color: var(--text-2); overflow-wrap: break-word; }
   .check { display: flex; align-items: start; gap: var(--space-2xs); min-block-size: var(--target-min); cursor: pointer; }
   .check > span { min-inline-size: 0; overflow-wrap: break-word; }
   .check input { margin-block-start: var(--check-nudge); flex: none; inline-size: var(--check-size); block-size: var(--check-size); accent-color: var(--accent); }
+  /* Theme pictures (CL s101): Theme is chosen from small pictures, not a menu. Each is a native radio in a <label>, in a
+     role="radiogroup"; the picture carries the theme's own data-theme, so this file draws it (page, card, "Aa" in text-1,
+     two text-2 lines, an accent pill) in the look the page shows now (light or dark, after Appearance). The radio is
+     invisible and covers the whole tile, so the tile is the target (≥ 44 px) and the radio stays a radio to assistive
+     tech; the picture is aria-hidden and the name names the radio. Chosen: an outline in the page's accent with an offset,
+     the name semibold. The grid wraps: as many tiles to a row as fit at ≥ 5.2rem. */
+  .theme-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 5.2rem), 1fr));
+    gap: var(--space-xs) var(--space-2xs);
+    padding: var(--space-3xs);                 /* room for the chosen outline and its offset */
+  }
+  .theme-tile {
+    --tile-ring: var(--accent);                /* the page's accent, read here before the picture's own theme applies */
+    position: relative;
+    display: grid; justify-items: center; align-content: start; gap: var(--space-3xs);
+    min-block-size: var(--target-min-touch);
+    font-size: var(--step--1); line-height: var(--line-height-tight); text-align: center;
+    color: var(--text-1);
+    cursor: pointer;
+  }
+  .theme-tile input {
+    position: absolute; inset: 0; z-index: 1;
+    margin: 0; inline-size: 100%; block-size: 100%;
+    appearance: none; -webkit-appearance: none; opacity: 0; cursor: pointer;
+  }
+  .theme-pic {
+    display: block; inline-size: 100%; aspect-ratio: 4 / 3;
+    padding: 0.3rem;
+    background: var(--surface-page);
+    border: var(--border-thin) solid var(--border);
+    border-radius: var(--radius-s);
+  }
+  .theme-card {
+    display: grid; grid-template-columns: 1fr auto; align-content: start; justify-items: start; gap: 0.2rem 0.25rem;
+    block-size: 100%;
+    padding: 0.25rem 0.3rem;
+    background: var(--surface-card);
+    border-radius: calc(var(--radius-s) - 0.15rem);
+    box-shadow: var(--shadow-card);
+    outline: var(--border-thin) solid var(--hairline);
+  }
+  .theme-aa { color: var(--text-1); font-size: 0.7rem; font-weight: var(--weight-bold); line-height: 1; }
+  .theme-pill { align-self: center; inline-size: 0.75rem; block-size: 0.4rem; border-radius: var(--radius-pill); background: var(--accent); }
+  .theme-line { grid-column: 1 / -1; block-size: 0.18rem; inline-size: 80%; border-radius: var(--radius-pill); background: var(--text-2); }
+  .theme-line + .theme-line { inline-size: 55%; }
+  .theme-name { overflow-wrap: anywhere; }
+  .theme-tile:has(:checked) .theme-pic { outline: 3px solid var(--tile-ring); outline-offset: 2px; }
+  .theme-tile:has(:checked) .theme-name { font-weight: var(--weight-semibold); }
+  .theme-tile:has(:focus-visible) { outline: var(--focus-ring); outline-offset: var(--space-3xs); border-radius: var(--radius-s); }
+
   .button-row { display: flex; flex-wrap: wrap; gap: var(--space-2xs); }
   .button-row > button { max-inline-size: 100%; }
   .destructive { color: var(--danger); border-color: var(--danger); }
@@ -766,6 +831,10 @@
     #show-fields .sub-menu-items > div { border-color: CanvasText; }
     #show-fields .sub-menu-items > div:has(:checked) { background: Highlight; color: HighlightText; border-color: Highlight; }
     .scrolltop-wrap a { border: var(--border-thin) solid ButtonText; }
+    /* The theme pictures all draw in system colours here: each keeps a visible edge and the chosen one a Highlight ring. */
+    .theme-pic { border: var(--border-thin) solid CanvasText; }
+    .theme-card { outline-color: CanvasText; }
+    .theme-tile:has(:checked) .theme-pic { outline-color: Highlight; }
   }
 }
 

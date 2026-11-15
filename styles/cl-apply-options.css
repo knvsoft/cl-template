@@ -216,4 +216,8 @@
   body:has( #font [value="200"]:checked) main {
   font-family: fangsong;
   }
+  /* Serif (CL s101): New York on Apple systems. The values above stay for pages saved or exported with them. */
+  body:has( #font [value="115"]:checked) main {
+  font-family: var(--font-serif);
+  }
 }

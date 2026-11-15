@@ -81,26 +81,10 @@
 <div class="field">
 <label for="font">Font</label>
 <select id="font" data-action="setBodyFont">
-<optgroup label="Modern Font Stacks">
-  <option value="100" selected="">System UI
-</option><option value="101">Transitional
-</option><option value="102">Old Style
-</option><option value="103">Humanist
-</option><option value="104">Geometric Humanist
-</option><option value="105">Classical Humanist
-</option><option value="106">Neo-Grotesque
-</option><option value="107">Monospace Slab Serif
-</option><option value="108">Monospace Code
-</option><option value="109">Industrial
-</option><option value="110">Rounded Sans
-</option><option value="111">Slab Serif
-</option><option value="112">Antique
-</option><option value="113">Didone
-</option><option value="114">Handwritten
-</option></optgroup>
-<optgroup label="Generic">
-  <option value="200">Fangsong
-</option></optgroup>
+<option value="100" selected>System</option>
+<option value="115">Serif</option>
+<option value="110">Rounded</option>
+<option value="108">Monospace</option>
 </select>
 </div>
 <div class="field">
@@ -112,19 +96,20 @@
 <option value="fluid-1">Large, grows with the window</option>
 </select>
 </div>
+<label class="check"><input id="bold-text" type="checkbox"> <span>Bold text</span></label>
 </fieldset>
 
 <fieldset class="menu-group">
 <legend>Colour</legend>
 <div class="field">
-<label for="theme">Theme</label>
-<select id="theme" data-action="setTheme" aria-describedby="theme-hint">
-<option value="clBlue" selected>Standard</option>
-<option value="list">List colour</option>
-<option value="paper">Paper</option>
-<option value="contrast">High contrast</option>
-<option value="calm">Calm</option>
-</select>
+<span class="field-label" id="theme-label">Theme</span>
+<div class="theme-tiles" role="radiogroup" aria-labelledby="theme-label" aria-describedby="theme-hint" data-action="setTheme">
+<label class="theme-tile"><input type="radio" name="theme" id="theme-clBlue" value="clBlue" checked><span class="theme-pic" data-theme="clBlue" aria-hidden="true"><span class="theme-card"><span class="theme-aa">Aa</span><span class="theme-pill"></span><span class="theme-line"></span><span class="theme-line"></span></span></span><span class="theme-name">Standard</span></label>
+<label class="theme-tile"><input type="radio" name="theme" id="theme-list" value="list"><span class="theme-pic" data-theme="list" aria-hidden="true"><span class="theme-card"><span class="theme-aa">Aa</span><span class="theme-pill"></span><span class="theme-line"></span><span class="theme-line"></span></span></span><span class="theme-name">List colour</span></label>
+<label class="theme-tile"><input type="radio" name="theme" id="theme-paper" value="paper"><span class="theme-pic" data-theme="paper" aria-hidden="true"><span class="theme-card"><span class="theme-aa">Aa</span><span class="theme-pill"></span><span class="theme-line"></span><span class="theme-line"></span></span></span><span class="theme-name">Paper</span></label>
+<label class="theme-tile"><input type="radio" name="theme" id="theme-contrast" value="contrast"><span class="theme-pic" data-theme="contrast" aria-hidden="true"><span class="theme-card"><span class="theme-aa">Aa</span><span class="theme-pill"></span><span class="theme-line"></span><span class="theme-line"></span></span></span><span class="theme-name">High contrast</span></label>
+<label class="theme-tile"><input type="radio" name="theme" id="theme-calm" value="calm"><span class="theme-pic" data-theme="calm" aria-hidden="true"><span class="theme-card"><span class="theme-aa">Aa</span><span class="theme-pill"></span><span class="theme-line"></span><span class="theme-line"></span></span></span><span class="theme-name">Calm</span></label>
+</div>
 <span class="hint" id="theme-hint">Each theme has a light and a dark look.</span>
 </div>
 <div class="field">

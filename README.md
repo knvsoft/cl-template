@@ -28,6 +28,15 @@ Five themes, each named for what it is for and each a light and dark pair that f
 text at 4.5:1 or more and control edges at 3:1 or more. The themes offered before (`auto`, `light`, `dark`, `dark-dim`,
 `light-grape`, `dark-choco`) still open: Standard or Calm, keeping their light or dark.
 
+The menu chooses the theme from small pictures (`.theme-tiles`, a `role="radiogroup"` of `<label class="theme-tile">`
+radios named `theme`): each picture carries its own `data-theme`, so the stylesheet draws it in that theme's colours.
+
+## Text
+
+The menu offers four fonts — System (`100`), Serif (`115`, New York on Apple systems), Rounded (`110`) and Monospace
+(`108`) — and **Bold text** (`#bold-text`), which makes every weight token one step heavier. The other font values still
+apply, so pages saved with them open as before.
+
 ## Contribution
 
 Contacts Lister Template has its own contributing guidelines. Read [CONTRIBUTING.md](https://github.com/knvsoft/cl-template/blob/main/CONTRIBUTING.md) through before you create an issue or make a pull request.

@@ -140,6 +140,30 @@
     --font-: var(--font-humanist);   /* option 105 in cl-apply-options reads this (Humanist) */
   }
   @media (pointer: coarse) { :root { --target-min: var(--target-min-touch); } }
+
+  /* Gradients carry identity (CL s107): the list's colour, at a few named places, never behind controls, never in print.
+     --list-color is the theme's accent — under List color the list's own tag colour (the app's --list-accent-*), under the
+     other themes their accent. Declared with the theme selectors so each theme's own accent and surfaces are used.
+     --in-oklch / --in-oklab are set only where gradients can interpolate in those spaces; elsewhere they mix in the
+     default one. The band mixes in OKLab, not OKLCH: Paper, Calm and High contrast have surfaces with a hue of their own
+     and almost no chroma (High contrast: hue 0), and an OKLCH mix swings the hue part-way round the wheel (High contrast's
+     blue band came out pink, Paper's and Calm's green). OKLab has no hue to interpolate. */
+  :root, [data-theme] {
+    --in-oklch: ;
+    --in-oklab: ;
+    --list-color: var(--accent);
+    /* The page's title band: the list's colour at 20% over the header's surface, easing to the surface by 220px. */
+    --gradient-list-band: linear-gradient(var(--in-oklab) to bottom,
+      color-mix(in oklab, var(--list-color) 20%, var(--surface-raised)), var(--surface-raised) 220px);
+    /* Flat under prefers-contrast: more. */
+    --list-band-flat: color-mix(in oklab, var(--list-color) 12%, var(--surface-raised));
+    /* The tag dot before the title: SwiftUI's color.gradient look, the colour lifted 22% toward white at the top. */
+    --gradient-list-dot: linear-gradient(var(--in-oklch) to bottom,
+      color-mix(in oklch, var(--list-color), white 22%), var(--list-color));
+  }
+  @supports (background-image: linear-gradient(in oklch, red, blue)) {
+    :root, [data-theme] { --in-oklch: in oklch; --in-oklab: in oklab; }
+  }
 }
 
 /* ───────────────────────── themes (tier 2: one hue + scheme per theme) ───────────────────────── */
@@ -308,6 +332,19 @@
     border-radius: var(--radius-m);
     padding: var(--space-m) var(--gutter);
     gap: var(--space-xs);
+  }
+  /* The title band (CL s107): the header's surface carries the list's colour at its top, behind the title and the
+     comment; the Copy button and the switches sit where it has faded. The tag dot before the title is decorative (no alt
+     text, not part of the title's text). */
+  header { background-image: var(--gradient-list-band); }
+  #list-title::before {
+    content: "" / "";
+    display: inline-block;
+    inline-size: 0.5em; block-size: 0.5em;
+    margin-inline-end: 0.35em;
+    vertical-align: 0.08em;
+    border-radius: 50%;
+    background: var(--gradient-list-dot);
   }
   #list-title {
     font-family: var(--list-title-font, inherit);
@@ -813,6 +850,9 @@
     .segmented { box-shadow: inset 0 0 0 var(--border-thin) var(--text-2); }
     .segmented label:has(:checked) { box-shadow: inset 0 0 0 var(--border-thick) var(--text-1); font-weight: var(--weight-bold); }
     .h-card a { text-decoration: underline; text-underline-offset: var(--underline-offset); }
+    /* The title band and the dot are flat: one colour each, no fade. */
+    header { background-image: none; background-color: var(--list-band-flat); }
+    #list-title::before { background: var(--list-color); }
   }
 
   /* Forced colours: system colours only. Controls keep a border, the chosen pill and segment are Highlight (not tint),
@@ -821,6 +861,8 @@
   @media (forced-colors: active) {
     :root, [data-theme] { --focus-ring: var(--border-thick) solid Highlight; }
     header, .actions-container, .segmented { border: var(--border-thin) solid CanvasText; }
+    header { background-image: none; }
+    #list-title::before { display: none; }
     .h-card, .menu-group { border-color: CanvasText; }
     .actions-container:not([data-pill-layout="inline"], [data-pill-layout="below"]) #show-fields { border: var(--border-thin) solid CanvasText; }
     button { background: ButtonFace; color: ButtonText; border-color: ButtonText; }
@@ -848,6 +890,7 @@
     .menu, .actions-container, #show-menu, .scrolltop-wrap, .skip-link, button, .details.switch { display: none !important; }
     header { background: none; padding: 0 0 var(--print-gap); }
     #list-title { font-size: var(--print-title); }
+    #list-title::before { display: none; }
     #list-comment:empty, .p-note:empty, dl.p-note:has(.p-note:empty) { display: none !important; }
     #list-comment:empty::before, .p-note:empty::before { content: none; }
     .editable[contenteditable] { background: none; box-shadow: none; padding: 0; }

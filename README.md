@@ -31,6 +31,15 @@ text at 4.5:1 or more and control edges at 3:1 or more. The themes offered befor
 The menu chooses the theme from small pictures (`.theme-tiles`, a `role="radiogroup"` of `<label class="theme-tile">`
 radios named `theme`): each picture carries its own `data-theme`, so the stylesheet draws it in that theme's colours.
 
+### The title band
+
+The header carries the list's colour at its top, behind the title and the comment, with a small tag dot before the title.
+`--list-color` is the theme's accent (under List colour, the list's own); the tokens are `--gradient-list-band` (the colour
+at 20% over the header's surface, easing to the surface by 220px, mixed in OKLab), `--list-band-flat` and
+`--gradient-list-dot`. It is flat under `prefers-contrast: more`, and gone under `forced-colors: active` and in print. The
+title, the comment and the menu's labels keep 4.5:1 on the band's strongest stop in every theme. Contacts Lister turns the
+band off inside the app, which draws the list's colour itself.
+
 ## Text
 
 The menu offers four fonts — System (`100`), Serif (`115`, New York on Apple systems), Rounded (`110`) and Monospace
